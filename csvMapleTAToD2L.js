@@ -1,7 +1,7 @@
 /*jslint plusplus: true, node: true */
 /*global d3:true*/
 "use strict";
-var CSVMapleTAtoD2L = (function () {
+var csvMapleTAtoD2L = (function () {
 
    var parseCsv, makeCsv, d3,
       inNode = typeof module !== 'undefined' && typeof module.exports !== 'undefined';
@@ -20,7 +20,7 @@ var CSVMapleTAtoD2L = (function () {
 
 
    /************** FUNCTION *****************/
-   function CSVMapleTAtoD2L(csvText, d2lGradeName, d2lGradeTotalPossible) {
+   function csvMapleTAtoD2L(csvText, d2lGradeName, d2lGradeTotalPossible) {
       var csv, converted;
 
       csv = parseCsv(csvText, function (row) {
@@ -50,9 +50,9 @@ var CSVMapleTAtoD2L = (function () {
    /************** RETURN *****************/
    //for node testing
    if (inNode) {
-      module.exports = CSVMapleTAtoD2L;
+      module.exports = csvMapleTAtoD2L;
    }
 
    //for Broswer
-   return CSVMapleTAtoD2L;
+   return csvMapleTAtoD2L;
 }());

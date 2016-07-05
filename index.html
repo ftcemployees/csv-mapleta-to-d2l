@@ -38,6 +38,12 @@
          transition: opacity 0.5s ease;
          opacity: 1;
       }
+      
+      #filename {
+         color: aqua;
+         font-size: 20px;
+         margin-left: 30px;
+      }
 
    </style>
 </head>
@@ -50,6 +56,7 @@
       </label>
       <h2>Or</h2>
       <div id="drop">Drop CSV here</div>
+      <div id="filename"></div>
    </div>
    <div id='options'>
       <h2>2. Answer these Questions</h2>
@@ -66,8 +73,8 @@
       <h2>3. Click Go</h2>
       <button>Go</button>
    </div>
-   <script src="download.js"></script>
-   <script src="filereader.js"></script>
+   <script src="thirdParty/download.js"></script>
+   <script src="thirdParty/filereader.js"></script>
    <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
    <script src="CSVMapleTAToD2L.js"></script>
    <script src="main.js"></script>
