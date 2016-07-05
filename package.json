@@ -1,0 +1,18 @@
+{
+   "name": "csv-mapleta-to-d2l",
+   "version": "1.0.0",
+   "description": "this converts mapleta csv's to csv's that d2l can import to the grade book",
+   "main": "driver.js",
+   "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+   },
+   "author": "Joshua McKinney",
+   "license": "MIT",
+   "devDependencies": {
+      "d3-dsv": "^1.0.0"
+   },
+   "repository": {
+      "type": "git",
+      "url": "https://github.com/byuicampuscd/csv-mapleta-to-d2l.git"
+   }
+}

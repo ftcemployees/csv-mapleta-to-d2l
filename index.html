@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8">
+   <title>Maple TA CSV to D2L CSV</title>
+
+   <style>
+      body {
+         font-family: sans-serif;
+      }
+      
+      label {
+         display: block;
+      }
+      
+      #drop {
+         height: 200px;
+         margin: 10px;
+         border: 3px dashed gray;
+         background-color: lightgray;
+         text-align: center;
+         font-size: 65px;
+         line-height: 3;
+         color: white;
+      }
+      
+      #drop.dropping {
+         background-color: #68cb68;
+      }
+      
+      #options,
+      #go {
+         opacity: 0;
+      }
+      
+      #options.on,
+      #go.on {
+         transition: opacity 0.5s ease;
+         opacity: 1;
+      }
+
+   </style>
+</head>
+<body>
+   <div id="file">
+      <h2>1. Click 'Choose File' to read file</h2>
+      <label>
+         Maple TA File:
+         <input type="file">
+      </label>
+      <h2>Or</h2>
+      <div id="drop">Drop CSV here</div>
+   </div>
+   <div id='options'>
+      <h2>2. Answer these Questions</h2>
+      <label>
+         D2L Grade Column Name
+         <input id="assignmentName" type="text">
+      </label>
+      <label>
+         D2L Grade Total Possible Points
+         <input id="outOf" type="number">
+      </label>
+   </div>
+   <div id="go">
+      <h2>3. Click Go</h2>
+      <button>Go</button>
+   </div>
+   <script src="download.js"></script>
+   <script src="filereader.js"></script>
+   <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
+   <script src="CSVMapleTAToD2L.js"></script>
+   <script src="main.js"></script>
+</body>
+</html>
