@@ -1,82 +1,56 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-   <meta charset="utf-8">
-   <title>Maple TA CSV to D2L CSV</title>
+    <meta charset="utf-8">
+    <title>Maple TA CSV to D2L CSV</title>
 
-   <style>
-      body {
-         font-family: sans-serif;
-      }
-      
-      label {
-         display: block;
-      }
-      
-      #drop {
-         height: 200px;
-         margin: 10px;
-         border: 3px dashed gray;
-         background-color: lightgray;
-         text-align: center;
-         font-size: 65px;
-         line-height: 3;
-         color: white;
-      }
-      
-      #drop.dropping {
-         background-color: #68cb68;
-      }
-      
-      #options,
-      #go {
-         opacity: 0;
-      }
-      
-      #options.on,
-      #go.on {
-         transition: opacity 0.5s ease;
-         opacity: 1;
-      }
-      
-      #filename {
-         color: aqua;
-         font-size: 20px;
-         margin-left: 30px;
-      }
+    <link href="style.css" rel="stylesheet" type="text/css">
 
-   </style>
 </head>
+
 <body>
-   <div id="file">
-      <h2>1. Click 'Choose File' to read file</h2>
-      <label>
-         Maple TA File:
-         <input type="file">
-      </label>
-      <h2>Or</h2>
-      <div id="drop">Drop CSV here</div>
-      <div id="filename"></div>
-   </div>
-   <div id='options'>
-      <h2>2. Answer these Questions</h2>
-      <label>
-         D2L Grade Column Name
-         <input id="assignmentName" type="text">
-      </label>
-      <label>
-         D2L Grade Total Possible Points
-         <input id="outOf" type="number">
-      </label>
-   </div>
-   <div id="go">
-      <h2>3. Click Go</h2>
-      <button>Go</button>
-   </div>
-   <script src="thirdParty/download.js"></script>
-   <script src="thirdParty/filereader.js"></script>
-   <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
-   <script src="csvMapleTAToD2L.js"></script>
-   <script src="main.js"></script>
+
+    <div id="file">
+        <h2>1. Click 'Choose File' to read file</h2>
+
+        <label>
+            Maple TA File:
+            <input type="file">
+        </label>
+
+        <h2>Or</h2>
+
+        <div id="drop">Drop CSV here</div>
+        <div id="filename"></div>
+    </div>
+
+    <div id='options'>
+        <h2>2. Answer these Questions</h2>
+
+        <label>
+            D2L Grade Column Name
+            <input id="assignmentName" type="text">
+        </label>
+
+        <label>
+            D2L Grade Total Possible Points
+            <input id="outOf" type="number">
+        </label>
+
+    </div>
+
+    <div id="go">
+        <h2>3. Click Go</h2>
+
+        <button>Go</button>
+    </div>
+
+    <script src="thirdParty/download.js"></script>
+    <script src="thirdParty/filereader.js"></script>
+    <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
+    <script src="csvMapleTAToD2L.js"></script>
+    <script src="main.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,39 @@
+body {
+    font-family: sans-serif;
+}
+
+label {
+    display: block;
+}
+
+#drop {
+    height: 200px;
+    margin: 10px;
+    border: 3px dashed gray;
+    background-color: lightgray;
+    text-align: center;
+    font-size: 65px;
+    line-height: 3;
+    color: white;
+}
+
+#drop.dropping {
+    background-color: #68cb68;
+}
+
+#options,
+#go {
+    opacity: 0;
+}
+
+#options.on,
+#go.on {
+    transition: opacity 0.5s ease;
+    opacity: 1;
+}
+
+#filename {
+    color: aqua;
+    font-size: 20px;
+    margin-left: 30px;
+}
