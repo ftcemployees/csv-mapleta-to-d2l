@@ -1,5 +1,5 @@
 /*jslint plusplus: true, browser: true, devel: true */
-/*global FileReaderJS, csvMapleTAtoD2L*/
+/*global FileReaderJS, csvMapleTAToD2L, download*/
 var fileInfo, assignmentNameText, outOf;
 
 (function () {
@@ -59,8 +59,8 @@ var fileInfo, assignmentNameText, outOf;
       getOptions();
       //run the code
       console.log("fileInfo.text:", fileInfo.text);
-      converted = csvMapleTAtoD2L(fileInfo.text, assignmentNameText, outOf);
+      converted = csvMapleTAToD2L(fileInfo.text, assignmentNameText, outOf);
       download(converted, "converted_" + fileInfo.nameNoExtention + '_' + time + '.csv', fileInfo.mimeType);
    });
 
-}())
+}());

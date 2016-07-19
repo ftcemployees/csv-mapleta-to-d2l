@@ -1,7 +1,7 @@
 /*jslint plusplus: true, node: true */
 /*global d3:true*/
 "use strict";
-var csvMapleTAtoD2L = (function () {
+var csvMapleTAToD2L = (function () {
 
    var parseCsv, makeCsv, d3, objOut,
       inNode = typeof module !== 'undefined' && typeof module.exports !== 'undefined';
@@ -139,7 +139,7 @@ var csvMapleTAtoD2L = (function () {
    }
 
    //the columnsIn is an array full of objects that look like this
-   /*{
+   /*{ 
          nameOld: "My Name In CSV",
          nameNew: "My Name Out",
          pointsPossible: 52
