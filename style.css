@@ -33,7 +33,15 @@ label {
 }
 
 #filename {
-    color: aqua;
+    color: #11a533;
     font-size: 20px;
     margin-left: 30px;
+}
+
+[id*="labelID"] {
+    margin-bottom: 10px;
+}
+
+[id*="labelID"] label {
+    margin-bottom: 5px;
 }
