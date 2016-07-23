@@ -11,41 +11,47 @@
 
 <body>
 
-    <div id="file">
+    <main>
+        <div id="file">
 
-        <h1>Instructions</h1>
+            <h1>MapleTA Gradesheet Converter</h1>
 
-        <p>Upload to this application the csv file from MapleTA. Once uploaded, follow the instructions below.</p>
+            <h2>Instructions</h2>
 
-        <h2>1. Click 'Choose File' to read file</h2>
+            <p>Upload to this application the CSV file from MapleTA. Once uploaded, follow the instructions below.</p>
 
-        <label>
-            Maple TA File:
-            <input type="file">
-        </label>
+            <p id="errorMessage"></p>
 
-        <h2>Or</h2>
+            <h2>1. Click 'Choose File' to read file</h2>
 
-        <div id="drop">Drop CSV here</div>
-        <div id="filename"></div>
-    </div>
+            <label>
+                Maple TA File:
+                <input type="file">
+            </label>
 
-    <div id='options'>
-        <h2>2. Answer these Questions</h2>
+            <h2>Or</h2>
 
-        <div id="columnNameContainer">
-            <!--
-            Column names with appear here.
-            -->
+            <div id="drop">Drop CSV here</div>
+            <div id="filename"></div>
         </div>
 
-    </div>
+        <div id='options'>
+            <h2>2. Answer these Questions</h2>
 
-    <div id="go">
-        <h2>3. Click Go</h2>
+            <div id="columnNameContainer">
+                <!--
+            Column names with appear here.
+            -->
+            </div>
 
-        <button>Go</button>
-    </div>
+        </div>
+
+        <div id="go">
+            <h2>3. Click Go to convert the CSV sheet.</h2>
+
+            <button>Go</button>
+        </div>
+    </main>
 
     <script src="thirdParty/download.js"></script>
     <script src="thirdParty/filereader.js"></script>

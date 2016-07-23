@@ -1,5 +1,40 @@
+* {
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+}
+
+main {
+    width: 90%;
+    display: block;
+    margin: auto;
+}
+
 body {
+    padding-top: 20px;
     font-family: sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+label {
+    font-family: Helvetica, "Century Gothic", sans-serif;
+    font-weight: 100;
+}
+
+h1 {
+    margin-bottom: 15px;
+}
+
+h2,
+label,
+p {
+    margin-bottom: 10px;
 }
 
 label {
@@ -10,7 +45,7 @@ label {
     height: 200px;
     margin: 10px;
     border: 3px dashed gray;
-    background-color: lightgray;
+    background-color: #b0c4de;
     text-align: center;
     font-size: 65px;
     line-height: 3;
@@ -44,4 +79,10 @@ label {
 
 [id*="labelID"] label {
     margin-bottom: 5px;
+}
+
+@media (min-width: 800px) {
+    main {
+        width: 50%;
+    }
 }

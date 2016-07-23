@@ -3,201 +3,211 @@
 "use strict";
 var csvMapleTAToD2L = (function () {
 
-   var parseCsv, makeCsv, d3, objOut,
-      inNode = typeof module !== 'undefined' && typeof module.exports !== 'undefined';
+    var parseCsv, makeCsv, d3, objOut,
+        inNode = typeof module !== 'undefined' && typeof module.exports !== 'undefined';
 
-   /************** SETUP *****************/
+    /************** SETUP *****************/
 
-   //for node testing
-   if (inNode) {
-      d3 = require('d3-dsv');
-   } else {
-      d3 = window.d3;
-   }
-   //abstraction
-   parseCsv = d3.csvParse;
-   makeCsv = d3.csvFormat;
+    //for node testing
+    if (inNode) {
+        d3 = require('d3-dsv');
+    } else {
+        d3 = window.d3;
+    }
+    //abstraction
+    parseCsv = d3.csvParse;
+    makeCsv = d3.csvFormat;
 
-   function ordinalNumber(numIn) {
-      var onesPlace = numIn % 10,
-         ending;
-      switch (onesPlace) {
-      case 1:
-         ending = 'st';
-         break;
-      case 2:
-         ending = 'nd';
-         break;
-      case 3:
-         ending = 'rd';
-         break;
-      default:
-         ending = 'th';
-      }
+    function ordinalNumber(numIn) {
+        var onesPlace = numIn % 10,
+            ending;
+        switch (onesPlace) {
+        case 1:
+            ending = 'st';
+            break;
+        case 2:
+            ending = 'nd';
+            break;
+        case 3:
+            ending = 'rd';
+            break;
+        default:
+            ending = 'th';
+        }
 
-      return numIn + ending;
-   }
+        return numIn + ending;
+    }
 
-   /***************************************************/
-   /****************** ERROR CHECKING *****************/
-   /***************************************************/
-   function colConversionsHasCorrectFormat(csvObj, colConversions) {
-      var errors = [];
+    /***************************************************/
+    /****************** ERROR CHECKING *****************/
+    /***************************************************/
+    function displayErr(errors) {
+        var errorPara = document.querySelector("#errorMessage"),
+            errorMessage = document.createTextNode(errors.join('\n'));
 
-      //check if colConversion is an array
-      if (!Array.isArray(colConversions) || colConversions.length === 0) {
-         errors.push('colConversions is not an array or is an empty array.');
-      } else {
+        errorPara.style.color = "red";
+        errorPara.appendChild(errorMessage);
 
-         colConversions.forEach(function (col, colIndex) {
-            var hasNameOld = true;
-            //check if the colConversions obj has all the right parts
-            if (typeof col.nameOld !== 'string') {
-               errors.push('In the colConversions array, the ' + ordinalNumber(colIndex + 1) + ' object does not have a nameOld property or is not a string.');
-               hasNameOld = false;
-            }
+        errorPara.appendChild(errorMessage);
+    }
 
-            if (typeof col.nameNew !== 'string') {
-               errors.push('In the colConversions array, the ' + ordinalNumber(colIndex + 1) + ' object does not have a nameNew property or is not a string.');
-            }
+    function colConversionsHasCorrectFormat(csvObj, colConversions) {
+        var errors = [];
 
-            if (typeof col.pointsPossible !== 'number' || isNaN(col.pointsPossible)) {
-               errors.push('In the colConversions array, the ' + ordinalNumber(colIndex + 1) + ' object does not have a pointsPossible property or is not a number.');
-            }
+        //check if colConversion is an array
+        if (!Array.isArray(colConversions) || colConversions.length === 0) {
+            errors.push('colConversions is not an array or is an empty array.');
+        } else {
 
-            //check the col is in the csv
-            if (hasNameOld && csvObj.columns.indexOf(col.nameOld) === -1) {
-               errors.push('The ' + ordinalNumber(colIndex + 1) + ' grade column, named "' + col.nameOld + '", could not be found in the CSV.');
-            }
-         });
+            colConversions.forEach(function (col, colIndex) {
+                var hasNameOld = true;
+                //check if the colConversions obj has all the right parts
+                if (typeof col.nameOld !== 'string') {
+                    errors.push('In the colConversions array, the ' + ordinalNumber(colIndex + 1) + ' object does not have a nameOld property or is not a string.');
+                    hasNameOld = false;
+                }
 
-      }
-      //see if we made it
-      if (errors.length > 0) {
-         //concat message and throw error
-         throw new Error(errors.join('\n'));
-      }
-   }
+                if (typeof col.nameNew !== 'string') {
+                    errors.push('In the colConversions array, the ' + ordinalNumber(colIndex + 1) + ' object does not have a nameNew property or is not a string.');
+                }
 
-   function csvHasCorrectColumns(d3ParsedCSV) {
-      var errors = [],
-         cols = d3ParsedCSV.columns,
-         totalIndex = cols.indexOf('Total'),
-         idIndex = cols.indexOf('Student ID'),
-         loginIndex = cols.indexOf('Login');
+                if (typeof col.pointsPossible !== 'number' || isNaN(col.pointsPossible)) {
+                    errors.push('In the colConversions array, the ' + ordinalNumber(colIndex + 1) + ' object does not have a pointsPossible property or is not a number.');
+                }
 
-      //does it have Total as last column
+                //check the col is in the csv
+                if (hasNameOld && csvObj.columns.indexOf(col.nameOld) === -1) {
+                    errors.push('The ' + ordinalNumber(colIndex + 1) + ' grade column, named "' + col.nameOld + '", could not be found in the CSV.');
+                }
+            });
 
-      if (totalIndex === -1 || totalIndex !== cols.length - 1) {
-         errors.push('The CSV does not have "Total" as the LAST column.');
-      }
+        }
+        //see if we made it
+        if (errors.length > 0) {
+            //concat message and throw error
+            displayErr(errors);
+        }
+    }
 
-      //does it have a Student ID column
-      if (idIndex === -1) {
-         errors.push('The CSV does not have "Student ID" as one of the columns.');
-      }
+    function csvHasCorrectColumns(d3ParsedCSV) {
+        var errors = [],
+            cols = d3ParsedCSV.columns,
+            totalIndex = cols.indexOf('Total'),
+            idIndex = cols.indexOf('Student ID'),
+            loginIndex = cols.indexOf('Login');
 
-      //does it have a Login column
-      if (loginIndex === -1) {
-         errors.push('The CSV does not have "Login" as one of the columns.');
-      }
+        //does it have Total as last column
 
-      //see if we made it
-      if (errors.length > 0) {
-         //concat message and throw error
-         throw new Error(errors.join('\n'));
-      }
+        if (totalIndex === -1 || totalIndex !== cols.length - 1) {
+            errors.push('The CSV does not have "Total" as the LAST column.');
+        }
 
-   }
+        //does it have a Student ID column
+        if (idIndex === -1) {
+            errors.push('The CSV does not have "Student ID" as one of the columns.');
+        }
 
-   /***************************************************/
-   /******************** FUNCTIONS ********************/
-   /***************************************************/
-   function getGradeColNames(csvObj) {
-      var cols = csvObj.columns,
-         startIndex = cols.indexOf('Student ID') + 1,
-         endIndex = cols.indexOf('Total'),
-         colsOut = cols.slice(startIndex, endIndex);
+        //does it have a Login column
+        if (loginIndex === -1) {
+            errors.push('The CSV does not have "Login" as one of the columns.');
+        }
 
-      //console.log("cols:", cols);
-      //console.log("startIndex:", startIndex);
-      //console.log("endIndex:", endIndex);
-      //console.log("colsOut:", colsOut);
-      return colsOut;
-   }
+        //see if we made it
+        if (errors.length > 0) {
+            //concat message and throw error
+            displayErr(errors);
+        }
 
-   function parse(csvText) {
-      var csv = parseCsv(csvText);
-      //check if we have all the columns we need
-      //this will throw an error if we don't have all the columns we need.
-      //the message will be a '\n' delimited string that has the approate feed back to the user in it.
-      //We do not catch it here to make this modular
-      csvHasCorrectColumns(csv);
+    }
 
-      //we made it!
-      return csv;
-   }
+    /***************************************************/
+    /******************** FUNCTIONS ********************/
+    /***************************************************/
+    function getGradeColNames(csvObj) {
+        var cols = csvObj.columns,
+            startIndex = cols.indexOf('Student ID') + 1,
+            endIndex = cols.indexOf('Total'),
+            colsOut = cols.slice(startIndex, endIndex);
 
-   //the columnsIn is an array full of objects that look like this
-   /*{ 
-         nameOld: "My Name In CSV",
-         nameNew: "My Name Out",
-         pointsPossible: 52
-      }*/
-   function convert(csvObj, colConversions) {
-      var dataOut,
-         gradeCols = getGradeColNames(csvObj),
-         colsWeWant,
-         converted;
-      //error check if colConversions match in the csvObj.cols
-      //this will throw an error if every  colConversion.nameOld is not found in csvObj.columns.
-      //the message will be a '\n' delimited string that has the approate feed back to the user in it.
-      //We do not catch it here to make this modular
-      colConversionsHasCorrectFormat(csvObj, colConversions);
-      //we made it
+        //console.log("cols:", cols);
+        //console.log("startIndex:", startIndex);
+        //console.log("endIndex:", endIndex);
+        //console.log("colsOut:", colsOut);
+        return colsOut;
+    }
 
-      //Convert the csvObj to have the new col names and the ones we want
-      dataOut = csvObj.map(function (row) {
-         var rowOut = {
-            "OrgDefinedId": row['Student ID'],
-            "Username": row.Login,
-            "End-of-Line Indicator": "#"
-         };
+    function parse(csvText) {
+        var csv = parseCsv(csvText);
+        //check if we have all the columns we need
+        //this will throw an error if we don't have all the columns we need.
+        //the message will be a '\n' delimited string that has the approate feed back to the user in it.
+        //We do not catch it here to make this modular
+        csvHasCorrectColumns(csv);
 
-         //add in the grade cols
-         colConversions.forEach(function (col) {
-            rowOut[col.nameNew + ' Points Grade'] = (parseInt(row[col.nameOld], 10) / 100 * col.pointsPossible).toFixed(2);
-         });
+        //we made it!
+        return csv;
+    }
 
-         return rowOut;
-      });
+    //the columnsIn is an array full of objects that look like this
+    /*{
+          nameOld: "My Name In CSV",
+          nameNew: "My Name Out",
+          pointsPossible: 52
+       }*/
+    function convert(csvObj, colConversions) {
+        var dataOut,
+            gradeCols = getGradeColNames(csvObj),
+            colsWeWant,
+            converted;
+        //error check if colConversions match in the csvObj.cols
+        //this will throw an error if every  colConversion.nameOld is not found in csvObj.columns.
+        //the message will be a '\n' delimited string that has the approate feed back to the user in it.
+        //We do not catch it here to make this modular
+        colConversionsHasCorrectFormat(csvObj, colConversions);
+        //we made it
 
-      //back to csv text with the columns we want
-      colsWeWant = ["OrgDefinedId", "Username"];
+        //Convert the csvObj to have the new col names and the ones we want
+        dataOut = csvObj.map(function (row) {
+            var rowOut = {
+                "OrgDefinedId": row['Student ID'],
+                "Username": row.Login,
+                "End-of-Line Indicator": "#"
+            };
 
-      //add in the new cols in the order they gave us
-      colsWeWant = colsWeWant.concat(colConversions.map(function (col) {
-         return col.nameNew + ' Points Grade';
-      }));
+            //add in the grade cols
+            colConversions.forEach(function (col) {
+                rowOut[col.nameNew + ' Points Grade'] = (parseInt(row[col.nameOld], 10) / 100 * col.pointsPossible).toFixed(2);
+            });
 
-      //D2L wants this
-      colsWeWant.push('End-of-Line Indicator');
+            return rowOut;
+        });
 
-      return makeCsv(dataOut, colsWeWant);
-   }
+        //back to csv text with the columns we want
+        colsWeWant = ["OrgDefinedId", "Username"];
 
-   /************** RETURN *****************/
-   objOut = {
-      parse: parse,
-      convert: convert,
-      getGradeColNames: getGradeColNames
-   };
+        //add in the new cols in the order they gave us
+        colsWeWant = colsWeWant.concat(colConversions.map(function (col) {
+            return col.nameNew + ' Points Grade';
+        }));
 
-   //for node testing
-   if (inNode) {
-      module.exports = objOut;
-   }
+        //D2L wants this
+        colsWeWant.push('End-of-Line Indicator');
 
-   //for Broswer
-   return objOut;
+        return makeCsv(dataOut, colsWeWant);
+    }
+
+    /************** RETURN *****************/
+    objOut = {
+        parse: parse,
+        convert: convert,
+        getGradeColNames: getGradeColNames
+    };
+
+    //for node testing
+    if (inNode) {
+        module.exports = objOut;
+    }
+
+    //for Broswer
+    return objOut;
 }());

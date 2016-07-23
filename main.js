@@ -31,9 +31,9 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
                     var labelContainer = document.createElement("div"),
                         label1 = document.createElement("label"),
                         label2 = document.createElement("label"),
-                        label1TextNode = document.createTextNode("Insert the D2L grade column name for " + colNames[i]),
+                        label1TextNode = document.createTextNode("What is the Brightspace column name for " + colNames[i] + "?"),
                         assignmentNameInput = document.createElement("input"),
-                        label2TextNode = document.createTextNode("Insert the total amount of points for " + colNames[i]),
+                        label2TextNode = document.createTextNode("What is the total amount of points possible for column " + colNames[i] + "?"),
                         outOfInput = document.createElement("input");
 
 
@@ -126,14 +126,15 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
         //set the global values
         if (validateGo()) {
             var arrExport = getOptions();
-        };
-
-        console.log(arrExport);
 
         //run the code
         console.log("fileInfo.text:", fileInfo.text);
         converted = csvMapleTAToD2L.convert(parseCol, arrExport);
         download(converted, "converted_" + fileInfo.nameNoExtention + '_' + time + '.csv', fileInfo.mimeType);
+
+        } else {
+            console.error("Must fill in all inputs!");
+        }
 
     };
 
