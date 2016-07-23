@@ -27,6 +27,8 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
 
                 colLength = colNames.length;
 
+                /*Dynamically create inputs for each
+                gradable column on the CSV import*/
                 for (var i = 0; i < colLength; i++) {
                     var labelContainer = document.createElement("div"),
                         label1 = document.createElement("label"),
@@ -70,6 +72,7 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
     FileReaderJS.setupInput(document.querySelector('#file input'), options);
     FileReaderJS.setupDrop(document.querySelector('#drop'), options);
 
+    /*Validate the inputs*/
     function validateGo() {
         assignmentNameText = document.querySelectorAll('#assignmentName');
         outOf = document.querySelectorAll('#outOf');
@@ -85,6 +88,7 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
         return pass;
     }
 
+    /*Show to next part of the form*/
     function showGo() {
         var classList = document.querySelector('#go').classList;
         console.log(validateGo());
@@ -97,6 +101,7 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
         }
     }
 
+    /*Load all the options for the conversion Brightspace CSV gradesheet.*/
     function getOptions() {
         var arrExport = [];
 

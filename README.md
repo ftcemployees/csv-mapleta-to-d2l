@@ -6,7 +6,6 @@ more info to come
 
 ##TODO
 
-
 1. have `main.js` use the new `parse, getGradeColNames and convert` in from `csvMapleTAToD2l.js`
 
 NOTE: Completed.
@@ -34,3 +33,7 @@ NOTE: Completed.  Title added to webpage.
 1. explain how to use it using the demo csv files.
 1. explain what you need to do in MapleTA and D2L to use it
 1. add in local storage
+
+##Application Link
+
+<a href="https://content.byui.edu/integ/gen/c9cf10db-ba9e-4cd4-a0bf-8bce9f89dd16/0/csv-mapleta-to-d2l.zip/csv-mapleta-to-d2l/index.html">Try it out!</a>
