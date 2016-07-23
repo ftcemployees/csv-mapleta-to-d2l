@@ -70,7 +70,7 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
     FileReaderJS.setupInput(document.querySelector('#file input'), options);
     FileReaderJS.setupDrop(document.querySelector('#drop'), options);
 
-    function getOptions() {
+    function validateGo() {
         assignmentNameText = document.querySelectorAll('#assignmentName');
         outOf = document.querySelectorAll('#outOf');
 
@@ -87,8 +87,8 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
 
     function showGo() {
         var classList = document.querySelector('#go').classList;
-        console.log(getOptions());
-        if (getOptions()) {
+        console.log(validateGo());
+        if (validateGo()) {
             console.log('on');
             classList.add('on');
         } else {
@@ -97,20 +97,44 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
         }
     }
 
+    function getOptions() {
+        var arrExport = [];
+
+        for (var i = 0; i < assignmentNameText.length; i++) {
+
+            var objExport = {
+                nameOld: colNames[i],
+                nameNew: assignmentNameText[i].value,
+                pointsPossible: +outOf[i].value
+            };
+
+            arrExport.push(objExport);
+        }
+
+        return arrExport;
+    }
+
     //Go button click logic
     document.querySelector('button').onclick = function () {
+
         var converted, time, date;
+
         date = new Date();
         time = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + '_' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
         console.log("time:", time);
 
         //set the global values
-        getOptions();
+        if (validateGo()) {
+            var arrExport = getOptions();
+        };
+
+        console.log(arrExport);
 
         //run the code
         console.log("fileInfo.text:", fileInfo.text);
-        converted = csvMapleTAToD2L.convert(parseCol, colNames);
+        converted = csvMapleTAToD2L.convert(parseCol, arrExport);
         download(converted, "converted_" + fileInfo.nameNoExtention + '_' + time + '.csv', fileInfo.mimeType);
+
     };
 
 }());

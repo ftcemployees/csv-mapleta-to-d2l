@@ -8,6 +8,9 @@ more info to come
 
 
 1. have `main.js` use the new `parse, getGradeColNames and convert` in from `csvMapleTAToD2l.js`
+
+NOTE: Completed.
+
 1. make the interface ask for the input
 1. handle the errors and report to the user
 1. add instructions
