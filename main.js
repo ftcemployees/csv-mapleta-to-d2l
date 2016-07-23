@@ -1,6 +1,6 @@
 /*jslint plusplus: true, browser: true, devel: true */
 /*global FileReaderJS, csvMapleTAToD2L, download*/
-var fileInfo, assignmentNameText, outOf;
+var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
 
 (function () {
 
@@ -20,13 +20,14 @@ var fileInfo, assignmentNameText, outOf;
                     mimeType: file.type
                 };
 
-                var parseCol = csvMapleTAToD2L.parse(e.target.result),
-                    colNames = csvMapleTAToD2L.getGradeColNames(parseCol),
-                    columnNameContainer = document.querySelector("#columnNameContainer");
+                parseCol = csvMapleTAToD2L.parse(e.target.result);
+                colNames = csvMapleTAToD2L.getGradeColNames(parseCol);
 
-                console.log(colNames);
+                var columnNameContainer = document.querySelector("#columnNameContainer");
 
-                for (var i = 0; i < colNames.length; i++) {
+                colLength = colNames.length;
+
+                for (var i = 0; i < colLength; i++) {
                     var labelContainer = document.createElement("div"),
                         label1 = document.createElement("label"),
                         label2 = document.createElement("label"),
@@ -70,18 +71,24 @@ var fileInfo, assignmentNameText, outOf;
     FileReaderJS.setupDrop(document.querySelector('#drop'), options);
 
     function getOptions() {
-        assignmentNameText = document.querySelector('#assignmentName').value;
-        outOf = parseInt(document.querySelector('#outOf').value, 10);
-    }
+        assignmentNameText = document.querySelectorAll('#assignmentName');
+        outOf = document.querySelectorAll('#outOf');
 
-    function optionsAreOK() {
-        return assignmentNameText.length > 0 && !isNaN(outOf);
+        var pass = true;
+
+        for (var i = 0; i < assignmentNameText.length; i++) {
+            if (assignmentNameText[i].value === "" && outOf[i].value === "") {
+                pass = false;
+            }
+        }
+
+        return pass;
     }
 
     function showGo() {
         var classList = document.querySelector('#go').classList;
-        getOptions();
-        if (optionsAreOK()) {
+        console.log(getOptions());
+        if (getOptions()) {
             console.log('on');
             classList.add('on');
         } else {
@@ -102,7 +109,7 @@ var fileInfo, assignmentNameText, outOf;
 
         //run the code
         console.log("fileInfo.text:", fileInfo.text);
-        converted = csvMapleTAToD2L(fileInfo.text, assignmentNameText, outOf);
+        converted = csvMapleTAToD2L.convert(parseCol, colNames);
         download(converted, "converted_" + fileInfo.nameNoExtention + '_' + time + '.csv', fileInfo.mimeType);
     };
 
