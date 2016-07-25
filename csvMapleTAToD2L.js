@@ -14,6 +14,7 @@ var csvMapleTAToD2L = (function () {
     } else {
         d3 = window.d3;
     }
+
     //abstraction
     parseCsv = d3.csvParse;
     makeCsv = d3.csvFormat;
@@ -85,7 +86,7 @@ var csvMapleTAToD2L = (function () {
         //see if we made it
         if (errors.length > 0) {
             //concat message and throw error
-            displayErr(errors);
+            throw new Error(errors.join('\n'));
         }
     }
 
@@ -115,7 +116,7 @@ var csvMapleTAToD2L = (function () {
         //see if we made it
         if (errors.length > 0) {
             //concat message and throw error
-            displayErr(errors);
+            throw new Error(errors.join('\n'));
         }
 
     }
@@ -138,6 +139,7 @@ var csvMapleTAToD2L = (function () {
 
     function parse(csvText) {
         var csv = parseCsv(csvText);
+
         //check if we have all the columns we need
         //this will throw an error if we don't have all the columns we need.
         //the message will be a '\n' delimited string that has the approate feed back to the user in it.
@@ -148,7 +150,7 @@ var csvMapleTAToD2L = (function () {
         return csv;
     }
 
-    //the columnsIn is an array full of objects that look like this
+    //the colConversions is an array full of objects that look like this
     /*{
           nameOld: "My Name In CSV",
           nameNew: "My Name Out",
@@ -156,7 +158,6 @@ var csvMapleTAToD2L = (function () {
        }*/
     function convert(csvObj, colConversions) {
         var dataOut,
-            gradeCols = getGradeColNames(csvObj),
             colsWeWant,
             converted;
         //error check if colConversions match in the csvObj.cols
@@ -176,6 +177,7 @@ var csvMapleTAToD2L = (function () {
 
             //add in the grade cols
             colConversions.forEach(function (col) {
+                //handle % here
                 rowOut[col.nameNew + ' Points Grade'] = (parseInt(row[col.nameOld], 10) / 100 * col.pointsPossible).toFixed(2);
             });
 
@@ -186,9 +188,9 @@ var csvMapleTAToD2L = (function () {
         colsWeWant = ["OrgDefinedId", "Username"];
 
         //add in the new cols in the order they gave us
-        colsWeWant = colsWeWant.concat(colConversions.map(function (col) {
-            return col.nameNew + ' Points Grade';
-        }));
+        colConversions.forEach(function (col) {
+            colsWeWant.push(col.nameNew + ' Points Grade');
+        });
 
         //D2L wants this
         colsWeWant.push('End-of-Line Indicator');
