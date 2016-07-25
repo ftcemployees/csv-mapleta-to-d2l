@@ -74,6 +74,9 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
                 colNames = csvMapleTAToD2L.getGradeColNames(parseCol);
 
                 var columnNameContainer = document.querySelector("#columnNameContainer"),
+                    table = document.createElement("table"),
+                    row,
+                    cell,
                     i,
                     labelContainer,
                     label1,
@@ -84,41 +87,63 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
                     outOfInput;
 
                 colLength = colNames.length;
-
+                table.style.border = "1px solid black";
+                table.style.borderCollapse = "collapse";
+                
+                row = document.createElement("tr");
+                cell = document.createElement("th");
+                cell.style.border = "1px solid black";
+                row.appendChild(cell);
+                
+                cell = document.createElement("th");
+                cell.innerHTML = "Bright Space Name";
+                cell.style.border = "1px solid black";
+                row.appendChild(cell);
+                
+                cell = document.createElement("th");
+                cell.innerHTML = "Points Possible";
+                cell.style.border = "1px solid black";
+                row.appendChild(cell);
+                
+                table.appendChild(row);
+                
                 /*Dynamically create inputs for each
                 gradable column on the CSV import*/
                 for (i = 0; i < colLength; i++) {
-                    labelContainer = document.createElement("div");
-                    label1 = document.createElement("label");
-                    label2 = document.createElement("label");
-                    label1TextNode = document.createTextNode("What is the Brightspace column name for " + colNames[i] + "?");
+                    row = document.createElement("tr");
+                    cell = document.createElement("th");
+                    cell.style.border = "1px solid black";
+                    cell.innerHTML = colNames[i];
+                    row.appendChild(cell);
+                    
                     assignmentNameInput = document.createElement("input");
-                    label2TextNode = document.createTextNode("What is the total amount of points possible for column " + colNames[i] + "?");
                     outOfInput = document.createElement("input");
 
                     assignmentNameInput.id = "assignmentName";
                     assignmentNameInput.type = "text";
                     assignmentNameInput.className = "columnIDLabel1" + [i];
                     assignmentNameInput.oninput = showGo;
+                    
+                    cell = document.createElement("td");
+                    cell.style.border = "1px solid black";
+                    cell.appendChild(assignmentNameInput);
+                    row.appendChild(cell);
 
                     outOfInput.id = "outOf";
                     outOfInput.type = "number";
                     outOfInput.className = "columnIDLabel2" + [i];
                     outOfInput.oninput = showGo;
 
-                    label1.appendChild(label1TextNode);
-                    label1.appendChild(assignmentNameInput);
-
-                    label2.appendChild(label2TextNode);
-                    label2.appendChild(outOfInput);
-
-                    labelContainer.appendChild(label1);
-                    labelContainer.appendChild(label2);
-                    labelContainer.id = "labelID" + [i];
-
-                    columnNameContainer.appendChild(labelContainer);
+                    cell = document.createElement("td");
+                    cell.style.border = "1px solid black";
+                    cell.appendChild(outOfInput);
+                    row.appendChild(cell);
+                    
+                    table.appendChild(row);
                 }
 
+                columnNameContainer.appendChild(table);
+                
                 document.querySelector('#options').classList.add('on');
                 document.querySelector('#filename').innerHTML = fileInfo.name;
             }
