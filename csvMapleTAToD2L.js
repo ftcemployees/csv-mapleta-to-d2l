@@ -167,6 +167,9 @@ var csvMapleTAToD2L = (function () {
         colConversionsHasCorrectFormat(csvObj, colConversions);
         //we made it
 
+        console.log("colConverstions: ");
+        console.log(colConversions);
+        
         //Convert the csvObj to have the new col names and the ones we want
         dataOut = csvObj.map(function (row) {
             var rowOut = {
@@ -178,7 +181,12 @@ var csvMapleTAToD2L = (function () {
             //add in the grade cols
             colConversions.forEach(function (col) {
                 //handle % here
-                rowOut[col.nameNew + ' Points Grade'] = (parseInt(row[col.nameOld], 10) / 100 * col.pointsPossible).toFixed(2);
+                console.log(row[col.nameOld]);
+                if (row[col.nameOld].indexOf('%') > -1) {
+                    rowOut[col.nameNew + ' Points Grade'] = (parseInt(row[col.nameOld], 10) / 100 * col.pointsPossible).toFixed(2);
+                } else {
+                    throw new Error("");
+                }
             });
 
             return rowOut;

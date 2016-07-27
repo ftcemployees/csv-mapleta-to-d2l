@@ -53,6 +53,8 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
             arrExport.push(objExport);
         }
 
+        console.log(arrExport)
+        
         return arrExport;
     }
 
@@ -84,25 +86,28 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
                     label1TextNode,
                     assignmentNameInput,
                     label2TextNode,
-                    outOfInput;
+                    outOfInput,
+                    checkBox;
 
-                colLength = colNames.length;
-                table.style.border = "1px solid black";
-                table.style.borderCollapse = "collapse";
+                columnNameContainer.innerHTML = '';
                 
+                colLength = colNames.length;
+                
+                // Heading Cells 'Blank Cell', 'Bright Space Name', 'Points Possible'
                 row = document.createElement("tr");
                 cell = document.createElement("th");
-                cell.style.border = "1px solid black";
                 row.appendChild(cell);
                 
                 cell = document.createElement("th");
                 cell.innerHTML = "Bright Space Name";
-                cell.style.border = "1px solid black";
                 row.appendChild(cell);
                 
                 cell = document.createElement("th");
                 cell.innerHTML = "Points Possible";
-                cell.style.border = "1px solid black";
+                row.appendChild(cell);
+                
+                cell = document.createElement("th");
+                cell.innerHTML = "Include?";
                 row.appendChild(cell);
                 
                 table.appendChild(row);
@@ -110,35 +115,43 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
                 /*Dynamically create inputs for each
                 gradable column on the CSV import*/
                 for (i = 0; i < colLength; i++) {
+                    // Name of assignment
                     row = document.createElement("tr");
                     cell = document.createElement("th");
-                    cell.style.border = "1px solid black";
                     cell.innerHTML = colNames[i];
                     row.appendChild(cell);
                     
+                    // Input for brightspace name
                     assignmentNameInput = document.createElement("input");
-                    outOfInput = document.createElement("input");
-
                     assignmentNameInput.id = "assignmentName";
                     assignmentNameInput.type = "text";
                     assignmentNameInput.className = "columnIDLabel1" + [i];
                     assignmentNameInput.oninput = showGo;
                     
                     cell = document.createElement("td");
-                    cell.style.border = "1px solid black";
                     cell.appendChild(assignmentNameInput);
                     row.appendChild(cell);
 
+                    // Input for points possible
+                    outOfInput = document.createElement("input");
                     outOfInput.id = "outOf";
                     outOfInput.type = "number";
                     outOfInput.className = "columnIDLabel2" + [i];
                     outOfInput.oninput = showGo;
 
                     cell = document.createElement("td");
-                    cell.style.border = "1px solid black";
                     cell.appendChild(outOfInput);
                     row.appendChild(cell);
                     
+                    // Input for including the grade item
+                    checkBox = document.createElement("input");
+                    checkBox.type = "checkbox";
+                    
+                    cell = document.createElement("td");
+                    cell.appendChild(checkBox);
+                    row.appendChild(cell);
+                    
+                    // Append the row to the table
                     table.appendChild(row);
                 }
 
@@ -170,6 +183,8 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
 
             //run the code
             console.log("fileInfo.text:", fileInfo.text);
+            console.log("PARSE COL: ");
+            console.log(parseCol);
             converted = csvMapleTAToD2L.convert(parseCol, arrExport);
             download(converted, "converted_" + fileInfo.nameNoExtention + '_' + time + '.csv', fileInfo.mimeType);
 
