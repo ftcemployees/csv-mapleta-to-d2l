@@ -13,6 +13,8 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
         var errorPara = document.querySelector("#errorMessage"),
             errorMessage;
 
+	errorPara.innerHTML = "";
+	
 	if (typeof errors == "string") {
 	    errorMessage = document.createTextNode(errors);
 	} else {
@@ -54,17 +56,19 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
     function getOptions() {
         var arrExport = [],
             i,
-            objExport;
+            objExport,
+	    table = document.getElementsByTagName("table")[0];
 
-        for (i = 0; i < assignmentNameText.length; i++) {
-
-            objExport = {
-                nameOld: colNames[i],
-                nameNew: assignmentNameText[i].value,
-                pointsPossible: +outOf[i].value
-            };
-
-            arrExport.push(objExport);
+        for (i = 1; i < table.children.length; i++) {
+	    if (table.children[i].children[3].children[0].checked) {
+		objExport = {
+                    nameOld:        table.children[i].children[0].innerHTML,
+                    nameNew:        table.children[i].children[1].children[0].value,
+                    pointsPossible: parseFloat(table.children[i].children[2].children[0].value)
+		};
+		
+		arrExport.push(objExport);
+	    }
         }
 
         console.log(arrExport)
