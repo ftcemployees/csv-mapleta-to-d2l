@@ -27,13 +27,10 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
     function showGo() {
         var classList = document.querySelector('#go').classList;
         console.log(validateGo());
-//        if (validateGo()) {
+
+	// Should this be changed to toggle the button on or off? Might not be necessary.
         console.log('on');
         classList.add('on');
-        /*} else {
-            console.log('off');
-            classList.remove('on');
-        }*/
     }
 
     /*Load all the options for the conversion Brightspace CSV gradesheet.*/
@@ -186,8 +183,6 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
 
             //run the code
             console.log("fileInfo.text:", fileInfo.text);
-            console.log("PARSE COL: ");
-            console.log(parseCol);
             converted = csvMapleTAToD2L.convert(parseCol, arrExport);
             download(converted, "converted_" + fileInfo.nameNoExtention + '_' + time + '.csv', fileInfo.mimeType);
 

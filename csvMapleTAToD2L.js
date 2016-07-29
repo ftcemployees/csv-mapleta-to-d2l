@@ -167,9 +167,6 @@ var csvMapleTAToD2L = (function () {
         colConversionsHasCorrectFormat(csvObj, colConversions);
         //we made it
 
-        console.log("colConverstions: ");
-        console.log(colConversions);
-        
         //Convert the csvObj to have the new col names and the ones we want
         dataOut = csvObj.map(function (row) {
             var rowOut = {
