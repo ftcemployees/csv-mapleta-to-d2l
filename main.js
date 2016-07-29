@@ -39,22 +39,8 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
 	}
 
 	if (!atLeastOneChecked) {
-	    throw new Error("At least one grade item must be included");
+	    throw new Error("At least one grade item must be included.");
 	}
-	
-        assignmentNameText = document.querySelectorAll('#assignmentName');
-        outOf = document.querySelectorAll('#outOf');
-
-        var pass = true,
-            i;
-
-        for (i = 0; i < assignmentNameText.length; i++) {
-            if (assignmentNameText[i].value === "" && outOf[i].value === "") {
-                pass = false;
-            }
-        }
-
-        return pass;
     }
 
     /*Show to next part of the form*/
@@ -216,22 +202,15 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
         //set the global values
 	try {
 	    validateGo();
-	} catch (e) {
-	    displayErr(e.message);
-	}
-	
-        if (validateGo()) {
-            arrExport = getOptions();
+	    arrExport = getOptions();
 
             //run the code
             console.log("fileInfo.text:", fileInfo.text);
             converted = csvMapleTAToD2L.convert(parseCol, arrExport);
             download(converted, "converted_" + fileInfo.nameNoExtention + '_' + time + '.csv', fileInfo.mimeType);
-
-        } else {
-            console.error("Must fill in all inputs!");
-        }
-
+	} catch (e) {
+	    displayErr(e.message);
+	}
     };
 
 }());

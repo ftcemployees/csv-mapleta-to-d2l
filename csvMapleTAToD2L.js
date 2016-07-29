@@ -157,7 +157,7 @@ var csvMapleTAToD2L = (function () {
         //Convert the csvObj to have the new col names and the ones we want
         dataOut = csvObj.map(function (row) {
             var rowOut = {
-                "OrgDefinedId": row['Student ID'],
+//                "OrgDefinedId": row['Student ID'],
                 "Username": row.Login,
                 "End-of-Line Indicator": "#"
             };
@@ -175,7 +175,8 @@ var csvMapleTAToD2L = (function () {
         });
 
         //back to csv text with the columns we want
-        colsWeWant = ["OrgDefinedId", "Username"];
+//        colsWeWant = ["OrgDefinedId", "Username"];
+	colsWeWant = ["Username"];
 
         //add in the new cols in the order they gave us
         colConversions.forEach(function (col) {
