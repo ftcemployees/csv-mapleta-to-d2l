@@ -21,10 +21,11 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
 	    errorMessage = document.createTextNode(errors.join('\n'));
 	}
 
-        errorPara.style.color = "red";
         errorPara.appendChild(errorMessage);
-
-        errorPara.appendChild(errorMessage);
+	errorPara.style.opacity = 1;
+	window.setTimeout(function() {
+	    errorPara.style.opacity = 0;
+	}, 5000);
     }
 
     /*Validate the inputs*/
@@ -57,14 +58,17 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
         var arrExport = [],
             i,
             objExport,
-	    table = document.getElementsByTagName("table")[0];
+	    table = document.getElementsByTagName("table")[0],
+	    queryString,
+	    length = document.querySelectorAll("table tr").length;
 
-        for (i = 1; i < table.children.length; i++) {
-	    if (table.children[i].children[3].children[0].checked) {
+        for (i = 1; i < length; i++) {
+	    queryString = "table tr:nth-of-type(" + (i + 1) + ") ";
+	    if (document.querySelectorAll(queryString + ":checked").length > 0) {
 		objExport = {
-                    nameOld:        table.children[i].children[0].innerHTML,
-                    nameNew:        table.children[i].children[1].children[0].value,
-                    pointsPossible: parseFloat(table.children[i].children[2].children[0].value)
+                    nameOld:        document.querySelector(queryString + "th").innerHTML,
+                    nameNew:        document.querySelector(queryString + "td:nth-of-type(1) input").value,
+                    pointsPossible: parseFloat(document.querySelector(queryString + "td:nth-of-type(2) input").value)
 		};
 		
 		arrExport.push(objExport);
@@ -182,7 +186,7 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
                 columnNameContainer.appendChild(table);
                 
                 document.querySelector('#options').classList.add('on');
-                document.querySelector('#filename').innerHTML = fileInfo.name;
+                document.querySelector('#filename').innerHTML = "Filename: " + fileInfo.name;
 
 		showGo();
             }

@@ -167,7 +167,7 @@ var csvMapleTAToD2L = (function () {
                 if (row[col.nameOld].indexOf('%') > -1) {
                     rowOut[col.nameNew + ' Points Grade'] = (parseInt(row[col.nameOld], 10) / 100 * col.pointsPossible).toFixed(2);
                 } else {
-                    throw new Error("");
+                    throw new Error("CSV file contains number scores and not percentages");
                 }
             });
 
