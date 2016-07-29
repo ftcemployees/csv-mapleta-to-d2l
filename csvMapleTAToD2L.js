@@ -177,8 +177,6 @@ var csvMapleTAToD2L = (function () {
 
             //add in the grade cols
             colConversions.forEach(function (col) {
-                //handle % here
-                console.log(row[col.nameOld]);
                 if (row[col.nameOld].indexOf('%') > -1) {
                     rowOut[col.nameNew + ' Points Grade'] = (parseInt(row[col.nameOld], 10) / 100 * col.pointsPossible).toFixed(2);
                 } else {
