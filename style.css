@@ -80,6 +80,7 @@ label {
     color: #004C00;/*#11a533;*/
     font-size: 20px;
     margin-left: 30px;
+    margin-bottom: 20px;
 }
 
 [id*="labelID"] {
@@ -104,4 +105,9 @@ th, tr, td {
 table {
     border-collapse: collapse;
     margin: 20px;
+}
+
+td:nth-of-type(3) {
+    text-align: center;
+    vertical-align: middle;
 }

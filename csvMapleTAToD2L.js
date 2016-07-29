@@ -39,19 +39,6 @@ var csvMapleTAToD2L = (function () {
         return numIn + ending;
     }
 
-    /***************************************************/
-    /****************** ERROR CHECKING *****************/
-    /***************************************************/
-    function displayErr(errors) {
-        var errorPara = document.querySelector("#errorMessage"),
-            errorMessage = document.createTextNode(errors.join('\n'));
-
-        errorPara.style.color = "red";
-        errorPara.appendChild(errorMessage);
-
-        errorPara.appendChild(errorMessage);
-    }
-
     function colConversionsHasCorrectFormat(csvObj, colConversions) {
         var errors = [];
 

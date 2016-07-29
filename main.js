@@ -6,8 +6,42 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
 
     "use strict";
 
+    /***************************************************/
+    /****************** ERROR CHECKING *****************/
+    /***************************************************/
+    function displayErr(errors) {
+        var errorPara = document.querySelector("#errorMessage"),
+            errorMessage;
+
+	if (typeof errors == "string") {
+	    errorMessage = document.createTextNode(errors);
+	} else {
+	    errorMessage = document.createTextNode(errors.join('\n'));
+	}
+
+        errorPara.style.color = "red";
+        errorPara.appendChild(errorMessage);
+
+        errorPara.appendChild(errorMessage);
+    }
+
     /*Validate the inputs*/
     function validateGo() {
+	var inputs = document.getElementsByTagName('input'),
+	    index = 0,
+	    atLeastOneChecked = false;
+	
+	for (; index < inputs.length; ++index) {
+	    if (inputs[index].type.toLowerCase() == "checkbox" &&
+		inputs[index].checked == true) {
+		atLeastOneChecked = true;
+	    }
+	}
+
+	if (!atLeastOneChecked) {
+	    throw new Error("At least one grade item must be included");
+	}
+	
         assignmentNameText = document.querySelectorAll('#assignmentName');
         outOf = document.querySelectorAll('#outOf');
 
@@ -26,10 +60,7 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
     /*Show to next part of the form*/
     function showGo() {
         var classList = document.querySelector('#go').classList;
-        console.log(validateGo());
-
 	// Should this be changed to toggle the button on or off? Might not be necessary.
-        console.log('on');
         classList.add('on');
     }
 
@@ -69,7 +100,12 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
                     mimeType: file.type
                 };
 
-                parseCol = csvMapleTAToD2L.parse(e.target.result);
+                try {
+		    parseCol = csvMapleTAToD2L.parse(e.target.result);
+		} catch (e) {
+		    displayErr(e.message);
+		}
+		
                 colNames = csvMapleTAToD2L.getGradeColNames(parseCol);
 
                 var columnNameContainer = document.querySelector("#columnNameContainer"),
@@ -178,6 +214,12 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
         console.log("time:", time);
 
         //set the global values
+	try {
+	    validateGo();
+	} catch (e) {
+	    displayErr(e.message);
+	}
+	
         if (validateGo()) {
             arrExport = getOptions();
 
