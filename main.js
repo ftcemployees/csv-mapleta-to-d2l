@@ -27,13 +27,13 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
     function showGo() {
         var classList = document.querySelector('#go').classList;
         console.log(validateGo());
-        if (validateGo()) {
-            console.log('on');
-            classList.add('on');
-        } else {
+//        if (validateGo()) {
+        console.log('on');
+        classList.add('on');
+        /*} else {
             console.log('off');
             classList.remove('on');
-        }
+        }*/
     }
 
     /*Load all the options for the conversion Brightspace CSV gradesheet.*/
@@ -126,7 +126,7 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
                     assignmentNameInput.id = "assignmentName";
                     assignmentNameInput.type = "text";
                     assignmentNameInput.className = "columnIDLabel1" + [i];
-                    assignmentNameInput.oninput = showGo;
+                    //assignmentNameInput.oninput = showGo;
                     
                     cell = document.createElement("td");
                     cell.appendChild(assignmentNameInput);
@@ -137,7 +137,7 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
                     outOfInput.id = "outOf";
                     outOfInput.type = "number";
                     outOfInput.className = "columnIDLabel2" + [i];
-                    outOfInput.oninput = showGo;
+                    //outOfInput.oninput = showGo;
 
                     cell = document.createElement("td");
                     cell.appendChild(outOfInput);
@@ -146,7 +146,8 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
                     // Input for including the grade item
                     checkBox = document.createElement("input");
                     checkBox.type = "checkbox";
-                    
+                    checkBox.checked = true;
+		    
                     cell = document.createElement("td");
                     cell.appendChild(checkBox);
                     row.appendChild(cell);
@@ -159,6 +160,8 @@ var fileInfo, assignmentNameText, outOf, colLength, parseCol, colNames;
                 
                 document.querySelector('#options').classList.add('on');
                 document.querySelector('#filename').innerHTML = fileInfo.name;
+
+		showGo();
             }
         }
     };

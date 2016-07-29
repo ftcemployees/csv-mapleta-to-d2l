@@ -11,8 +11,10 @@ main {
 }
 
 body {
+    background: #e1d3c1;
     padding-top: 20px;
     font-family: sans-serif;
+    margin: 20px;
 }
 
 h1,
@@ -56,6 +58,13 @@ label {
     background-color: #68cb68;
 }
 
+#go button {
+    padding: 3px;
+    width: 40px;
+    border-radius: 3px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
 #options,
 #go {
     opacity: 0;
@@ -94,4 +103,5 @@ th, tr, td {
 
 table {
     border-collapse: collapse;
+    margin: 20px;
 }
