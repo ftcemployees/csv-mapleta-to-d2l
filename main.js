@@ -1,10 +1,10 @@
-/*jslint plusplus: true, browser: true, devel: true */
+/*jslint plusplus: true, browser:true, node: true, devel: true */
 /*global FileReaderJS, csvMapleTAToD2L, download*/
 
 (function () {
     "use strict";
 
-    var fileInfo, colLength, parseCol, colNames, options;
+    var fileInfo, parseCol, options;
 
     /***************************************************/
     /****************** ERROR CHECKING *****************/
@@ -72,100 +72,66 @@
         return arrExport;
     }
 
-    function onLoadFileEnd(e, file) {
-        console.log(e.target.result);
-        console.log(file);
-        fileInfo = {
-            text: e.target.result,
-            name: file.name,
-            nameNoExtention: file.extra.nameNoExtension,
-            mimeType: file.type
-        };
-
-        try {
-            parseCol = csvMapleTAToD2L.parse(e.target.result);
-        } catch (er) {
-            displayErr(er.message);
-        }
-
-        colNames = csvMapleTAToD2L.getGradeColNames(parseCol);
-
+    function makeTheTable(fileInfo) {
         var columnNameContainer = document.querySelector("#columnNameContainer"),
             table = document.createElement("table"),
             row,
-            cell,
-            i,
-            labelContainer,
-            label1,
-            label2,
-            label1TextNode,
-            assignmentNameInput,
-            label2TextNode,
-            outOfInput,
-            checkBox;
+            i;
 
+        function addTr(row, text) {
+            var cell = document.createElement("th"),
+                textEle = document.createTextNode(text);
+            cell.appendChild(textEle);
+            row.appendChild(cell);
+        }
+
+        function addTextInputCell(row) {
+            var cell = document.createElement("td"),
+                textInput = document.createElement('input');
+
+            textInput.type = "text";
+            cell.appendChild(textInput);
+            row.appendChild(cell);
+        }
+
+        function addCheckboxCell(row) {
+            var cell = document.createElement("td"),
+                checkbox = document.createElement('input');
+
+            checkbox.type = "checkbox";
+            checkbox.checked = true;
+            cell.appendChild(checkbox);
+            row.appendChild(cell);
+        }
+
+        /************************ MAKE THE TABLE *****************************/
+        //clean out the container
         columnNameContainer.innerHTML = '';
 
-        colLength = colNames.length;
-
-        // Heading Cells 'Blank Cell', 'Bright Space Name', 'Points Possible'
         row = document.createElement("tr");
-        cell = document.createElement("th");
-        row.appendChild(cell);
 
-        cell = document.createElement("th");
-        cell.innerHTML = "Bright Space Name";
-        row.appendChild(cell);
-
-        cell = document.createElement("th");
-        cell.innerHTML = "Points Possible";
-        row.appendChild(cell);
-
-        cell = document.createElement("th");
-        cell.innerHTML = "Include?";
-        row.appendChild(cell);
+        // Heading Cells
+        addTr(row, "");
+        addTr(row, "Bright Space Name");
+        addTr(row, "Points Possible");
+        addTr(row, "Include?");
 
         table.appendChild(row);
 
-        /*Dynamically create inputs for each
-        gradable column on the CSV import*/
-        for (i = 0; i < colLength; i++) {
+        /*Dynamically create inputs for each gradable column on the CSV import*/
+        for (i = 0; i < fileInfo.colNames.length; i++) {
             // Name of assignment
             row = document.createElement("tr");
-            cell = document.createElement("th");
-            cell.innerHTML = colNames[i];
-            row.appendChild(cell);
+            addTr(row, fileInfo.colNames[i]);
 
             // Input for brightspace name
-            assignmentNameInput = document.createElement("input");
-            assignmentNameInput.id = "assignmentName";
-            assignmentNameInput.type = "text";
-            assignmentNameInput.className = "columnIDLabel1" + [i];
-            //assignmentNameInput.oninput = showGo;
-
-            cell = document.createElement("td");
-            cell.appendChild(assignmentNameInput);
-            row.appendChild(cell);
+            addTextInputCell(row);
 
             // Input for points possible
-            outOfInput = document.createElement("input");
-            outOfInput.id = "outOf";
-            outOfInput.type = "number";
-            outOfInput.className = "columnIDLabel2" + [i];
-            //outOfInput.oninput = showGo;
-
-            cell = document.createElement("td");
-            cell.appendChild(outOfInput);
-            row.appendChild(cell);
+            addTextInputCell(row);
 
             // Input for including the grade item
-            checkBox = document.createElement("input");
-            checkBox.type = "checkbox";
-            checkBox.checked = true;
-
-            cell = document.createElement("td");
-            cell.appendChild(checkBox);
-            row.appendChild(cell);
+            addCheckboxCell(row);
 
             // Append the row to the table
             table.appendChild(row);
@@ -173,8 +139,34 @@
 
         //add in the table guts
         columnNameContainer.appendChild(table);
+
+    }
+
+    function onLoadFileEnd(e, file) {
+
+        console.log(e.target.result);
+        console.log(file);
+
+        //parse the csv
+        try {
+            parseCol = csvMapleTAToD2L.parse(e.target.result);
+        } catch (er) {
+            displayErr(er.message);
+        }
+
+        fileInfo = {
+            text: e.target.result,
+            name: file.name,
+            nameNoExtention: file.extra.nameNoExtension,
+            mimeType: file.type,
+            colNames: csvMapleTAToD2L.getGradeColNames(parseCol)
+        };
+
+        makeTheTable(fileInfo);
+
         //add in the file name so the user can see what file they picked
         document.querySelector('#filename').innerHTML = "Filename: " + fileInfo.name;
+
         //show the rest of the ui
         document.querySelector('#options').classList.add('on');
     }
@@ -196,15 +188,18 @@
 
     //Go button click logic
     document.querySelector('button').onclick = function () {
+        function makeTime() {
+            var time, date;
+            date = new Date();
+            time = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + '_' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+            console.log("time:", time);
+            return time;
+        }
 
-        var converted, time, date,
-            arrExport;
+        var converted,
+            arrExport,
+            time = makeTime();
 
-        date = new Date();
-        time = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + '_' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-        console.log("time:", time);
-
-        //set the global values
         try {
             validateGo();
             arrExport = getOptions();
