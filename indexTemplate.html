@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>Maple TA CSV to D2L CSV</title>
 
-    <link href="style.css" rel="stylesheet" type="text/css">
+    <link href="dist/style.css" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -23,8 +23,6 @@
 
             <h2>1. Click 'Choose File' to read file</h2>
 
-	    <div id="filename"></div>
-	    
             <label>
                 Maple TA File:
                 <input type="file">
@@ -36,6 +34,7 @@
         </div>
 
         <div id='options'>
+            <div id="filename"></div>
             <h2>2. Answer these Questions</h2>
 
             <div id="columnNameContainer">
@@ -44,13 +43,11 @@
             -->
             </div>
 
-        </div>
-
-        <div id="go">
             <h2>3. Click Go to convert the CSV sheet.</h2>
 
             <button>Go</button>
         </div>
+
     </main>
 
     <script src="thirdParty/download.js"></script>
