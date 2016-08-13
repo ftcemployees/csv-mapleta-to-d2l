@@ -132,7 +132,7 @@ test('1/1', function (t) {
         t.fail(e.message);
     }
 
-    t.deepEqual(converted, 'OrgDefinedId,Username,MapleTA Points Grade,End-of-Line Indicator\n123456,name,75.00,#', converted);
+    t.deepEqual(converted, 'OrgDefinedId,Username,MapleTA Points Grade,End-of-Line Indicator\n#123456,#name,75.00,#', converted);
 
     t.end();
 });
@@ -203,7 +203,7 @@ test('3/3', function (t) {
         t.fail(e.message);
     }
 
-    t.deepEqual(converted, 'OrgDefinedId,Username,MapleTA1 Points Grade,MapleTA2 Points Grade,MapleTA3 Points Grade,End-of-Line Indicator\n123456,name,75.00,75.00,75.00,#', converted.split('\n')[0]);
+    t.deepEqual(converted, 'OrgDefinedId,Username,MapleTA1 Points Grade,MapleTA2 Points Grade,MapleTA3 Points Grade,End-of-Line Indicator\n#123456,#name,75.00,75.00,75.00,#', converted.split('\n')[0]);
 
     t.end();
 });
