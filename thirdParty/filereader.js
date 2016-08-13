@@ -1,3 +1,33 @@
+/*I made one tiny change to this file, the last line had 
+    })(this, document);
+I changed it to 
+    })(window, document);
+so it could work in browserify,
+Well I also added the full MIT license that follows below.
+*/
+
+/*MIT License
+
+Copyright (c) 2014 Brian Grinstead
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.*/
+
 /*!
 FileReader.js - v0.99
 A lightweight wrapper for common FileReader usage.
@@ -5,7 +35,7 @@ Copyright 2014 Brian Grinstead - MIT License.
 See http://github.com/bgrins/filereader.js for documentation.
 */
 
-(function(window, document) {
+(function (window, document) {
 
     var FileReader = window.FileReader;
     var FileReaderSyncSupport = false;
@@ -25,7 +55,7 @@ See http://github.com/bgrins/filereader.js for documentation.
                 checkFileReaderSyncSupport();
             }
         },
-        getSync: function() {
+        getSync: function () {
             return sync && FileReaderSyncSupport;
         },
         output: [],
@@ -33,8 +63,7 @@ See http://github.com/bgrins/filereader.js for documentation.
             dragClass: "drag",
             accept: false,
             readAsDefault: 'DataURL',
-            readAsMap: {
-            },
+            readAsMap: {},
             on: {
                 loadstart: noop,
                 progress: noop,
@@ -51,20 +80,19 @@ See http://github.com/bgrins/filereader.js for documentation.
     };
 
     // Setup jQuery plugin (if available)
-    if (typeof(jQuery) !== "undefined") {
-        jQuery.fn.fileReaderJS = function(opts) {
-            return this.each(function() {
+    if (typeof (jQuery) !== "undefined") {
+        jQuery.fn.fileReaderJS = function (opts) {
+            return this.each(function () {
                 if (jQuery(this).is("input")) {
                     setupInput(this, opts);
-                }
-                else {
+                } else {
                     setupDrop(this, opts);
                 }
             });
         };
 
-        jQuery.fn.fileClipboard = function(opts) {
-            return this.each(function() {
+        jQuery.fn.fileClipboard = function (opts) {
+            return this.each(function () {
                 setupClipboard(this, opts);
             });
         };
@@ -74,7 +102,6 @@ See http://github.com/bgrins/filereader.js for documentation.
     if (!FileReader) {
         return;
     }
-
 
     // makeWorker is a little wrapper for generating web workers from strings
     function makeWorker(script) {
@@ -182,14 +209,14 @@ See http://github.com/bgrins/filereader.js for documentation.
         }
 
         function bodydrop(e) {
-            if (e.dataTransfer.files && e.dataTransfer.files.length ){
+            if (e.dataTransfer.files && e.dataTransfer.files.length) {
                 e.stopPropagation();
                 e.preventDefault();
             }
         }
 
         function onlyWithFiles(fn) {
-            return function() {
+            return function () {
                 if (!initializedOnBody) {
                     fn.apply(this, arguments);
                 }
@@ -291,7 +318,7 @@ See http://github.com/bgrins/filereader.js for documentation.
         // Only initialize the synchronous worker if the option is enabled - to prevent the overhead
         if (supportsSync) {
             syncWorker = makeWorker(workerScript);
-            syncWorker.onmessage = function(e) {
+            syncWorker.onmessage = function (e) {
                 var file = e.data.file;
                 var result = e.data.result;
 
@@ -303,12 +330,16 @@ See http://github.com/bgrins/filereader.js for documentation.
                 file.extra.ended = new Date();
 
                 // Call error or load event depending on success of the read from the worker.
-                opts.on[result === "error" ? "error" : "load"]({ target: { result: result } }, file);
+                opts.on[result === "error" ? "error" : "load"]({
+                    target: {
+                        result: result
+                    }
+                }, file);
                 groupFileDone();
             };
         }
 
-        Array.prototype.forEach.call(files, function(file) {
+        Array.prototype.forEach.call(files, function (file) {
 
             file.extra.started = new Date();
 
@@ -332,14 +363,13 @@ See http://github.com/bgrins/filereader.js for documentation.
                     extra: file.extra,
                     readAs: readAs
                 });
-            }
-            else {
+            } else {
 
                 var reader = new FileReader();
                 reader.originalEvent = e;
 
-                fileReaderEvents.forEach(function(eventName) {
-                    reader['on' + eventName] = function(e) {
+                fileReaderEvents.forEach(function (eventName) {
+                    reader['on' + eventName] = function (e) {
                         if (eventName == 'load' || eventName == 'error') {
                             file.extra.ended = new Date();
                         }
@@ -358,7 +388,7 @@ See http://github.com/bgrins/filereader.js for documentation.
     function checkFileReaderSyncSupport() {
         var worker = makeWorker(syncDetectionScript);
         if (worker) {
-            worker.onmessage =function(e) {
+            worker.onmessage = function (e) {
                 FileReaderSyncSupport = e.data;
             };
             worker.postMessage({});
@@ -377,8 +407,7 @@ See http://github.com/bgrins/filereader.js for documentation.
                 source[property].constructor === Object) {
                 destination[property] = destination[property] || {};
                 arguments.callee(destination[property], source[property]);
-            }
-            else {
+            } else {
                 destination[property] = source[property];
             }
         }
@@ -393,35 +422,35 @@ See http://github.com/bgrins/filereader.js for documentation.
     // addClass: add the css class for the element.
     function addClass(el, name) {
         if (!hasClass(el, name)) {
-          el.className = el.className ? [el.className, name].join(' ') : name;
+            el.className = el.className ? [el.className, name].join(' ') : name;
         }
     }
 
     // removeClass: remove the css class from the element.
     function removeClass(el, name) {
         if (hasClass(el, name)) {
-          var c = el.className;
-          el.className = c.replace(new RegExp("(?:^|\\s+)" + name + "(?:\\s+|$)", "g"), " ").replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+            var c = el.className;
+            el.className = c.replace(new RegExp("(?:^|\\s+)" + name + "(?:\\s+|$)", "g"), " ").replace(/^\s\s*/, '').replace(/\s\s*$/, '');
         }
     }
 
     // prettySize: convert bytes to a more readable string.
     function prettySize(bytes) {
         var s = ['bytes', 'kb', 'MB', 'GB', 'TB', 'PB'];
-        var e = Math.floor(Math.log(bytes)/Math.log(1024));
-        return (bytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
+        var e = Math.floor(Math.log(bytes) / Math.log(1024));
+        return (bytes / Math.pow(1024, Math.floor(e))).toFixed(2) + " " + s[e];
     }
 
     // getGroupID: generate a unique int ID for groups.
-    var getGroupID = (function(id) {
-        return function() {
+    var getGroupID = (function (id) {
+        return function () {
             return id++;
         };
     })(0);
 
     // getUniqueID: generate a unique int ID for files
-    var getUniqueID = (function(id) {
-        return function() {
+    var getUniqueID = (function (id) {
+        return function () {
             return id++;
         };
     })(0);
@@ -429,4 +458,4 @@ See http://github.com/bgrins/filereader.js for documentation.
     // The interface is supported, bind the FileReaderJS callbacks
     FileReaderJS.enabled = true;
 
-})(this, document);
+})(window, document);
