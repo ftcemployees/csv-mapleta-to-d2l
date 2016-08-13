@@ -4,7 +4,14 @@
 (function () {
     "use strict";
 
-    var fileInfo, parseCol, options;
+    var fileInfo, parseCol, options,
+        csvMapleTAToD2L = require('./csvMapleTAToD2L.js'),
+        download = require('./thirdParty/download.js'),
+        filereaderFAKE = require('./thirdParty/filereader.js'),
+        FileReaderJS = window.FileReaderJS;
+
+    //filereaderFAKE is fake because filereader.js adds FileReaderJS to window
+    //its so it is included in the correct order with browserify
 
     /***************************************************/
     /****************** ERROR CHECKING *****************/

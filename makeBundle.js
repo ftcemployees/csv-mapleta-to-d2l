@@ -1,34 +1,40 @@
 /*jslint plusplus: true, node: true, devel: true */
 /*global */
 "use strict";
-
 var fs = require('fs'),
     cheerio = require('cheerio'),
-    browserify = require('browserify'),
-    string = fs.readFileSync('../index.html', 'utf8'),
-    $ = cheerio.load(string),
-    guts = $('main').html(),
-    encoded = encodeURI(guts),
-    fileOut = '',
-    fileName = 'makeUi.js';
+    browserify = require('browserify');
 
-fileOut += '$ = require("jquery");\n';
-fileOut += '$("main").html(decodeURI("' + encoded + '"));';
+function constructMakeUI() {
+    var string = fs.readFileSync('indexTemplate.html', 'utf8'),
+        $ = cheerio.load(string),
+        guts = $('main').html(),
+        encoded = encodeURI(guts),
+        fileOut = '',
+        fileName = 'makeUi.js';
 
-//console.log("encoded:", encoded);
-fs.writeFileSync('makeUi.js', fileOut);
-console.log("Wrote:", fileName);
+    //fileOut += 'var $ = require("jquery");\n';
+    //fileOut += '$("main").html(decodeURI("' + encoded + '"));';
 
-//wrap it up and ship it out
-var awesome = browserify([
-    'jqueryTry.js',
+    fileOut += 'document.querySelector("main").innerHTML = decodeURI("' + encoded + '");';
+
+    fs.writeFileSync('makeUi.js', fileOut);
+    console.log("Wrote:", fileName);
+}
+
+//make the UI file 
+constructMakeUI();
+
+//browserify it up and ship it out
+var browserifyed = browserify([
     'makeUI.js',
-    '../main.js'
+    'main.js'
 ]).bundle();
-var streamOut = fs.createWriteStream('dist/tryAll.js', 'utf8');
+
+var streamOut = fs.createWriteStream('dist/bundled.js', 'utf8');
 streamOut.on('error', function (e) {
     console.log(e);
 });
 
-awesome.pipe(streamOut);
-console.log("Wrote: tryAll.js");
+browserifyed.pipe(streamOut);
+console.log("Wrote: bundled.js");

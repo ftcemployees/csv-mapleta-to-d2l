@@ -1,27 +1,30 @@
 {
-  "name": "csv-mapleta-to-d2l",
-  "version": "1.0.0",
-  "description": "this converts mapleta csv's to csv's that d2l can import to the grade book",
-  "main": "driver.js",
-  "scripts": {
-    "test": "tape ./forTesting/testCSVMapleTaToD2L.js | tap-diff",
-    "testMon": "node ./forTesting/forTestMon.js"
-  },
-  "author": "Joshua McKinney",
-  "license": "MIT",
-  "devDependencies": {
-    "browserify": "^13.1.0",
-    "cheerio": "^0.20.0",
-    "d3-dsv": "^1.0.0",
-    "nodemon": "^1.9.2",
-    "tap-diff": "^0.1.1",
-    "tape": "^4.6.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/byuicampuscd/csv-mapleta-to-d2l.git"
-  },
-  "dependencies": {
-    "jquery": "^3.1.0"
-  }
+    "name": "csv-mapleta-to-d2l",
+    "version": "1.0.0",
+    "description": "this converts mapleta csv's to csv's that d2l can import to the grade book",
+    "main": "driver.js",
+    "scripts": {
+        "test": "tape ./forTesting/testCSVMapleTaToD2L.js | tap-diff",
+        "testModuleMon": "node ./forTesting/forTestMon.js",
+        "watch": "nodemon makeBundle.js --ignore makeui.js --ignore bundled.js",
+        "make": "node makeBundle.js"
+
+    },
+    "author": "Joshua McKinney",
+    "license": "MIT",
+    "devDependencies": {
+        "browserify": "^13.1.0",
+        "cheerio": "^0.20.0",
+        "d3-dsv": "^1.0.0",
+        "nodemon": "^1.9.2",
+        "tap-diff": "^0.1.1",
+        "tape": "^4.6.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/byuicampuscd/csv-mapleta-to-d2l.git"
+    },
+    "dependencies": {
+        "jquery": "^3.1.0"
+    }
 }
