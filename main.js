@@ -4,7 +4,7 @@
 (function () {
     "use strict";
 
-    var fileInfo, parseCol, options,
+    var fileInfo, parseCol,
         csvMapleTAToD2L = require('./csvMapleTAToD2L.js'),
         download = require('./thirdParty/download.js'),
         filereaderFAKE = require('./thirdParty/filereader.js'),
@@ -85,7 +85,7 @@
             row,
             i;
 
-        function addTr(row, text) {
+        function addTh(row, text) {
             var cell = document.createElement("th"),
                 textEle = document.createTextNode(text);
             cell.appendChild(textEle);
@@ -118,10 +118,10 @@
         row = document.createElement("tr");
 
         // Heading Cells
-        addTr(row, "");
-        addTr(row, "Bright Space Name");
-        addTr(row, "Points Possible");
-        addTr(row, "Include?");
+        addTh(row, "");
+        addTh(row, "Bright Space Name");
+        addTh(row, "Points Possible");
+        addTh(row, "Include?");
 
         table.appendChild(row);
 
@@ -129,7 +129,7 @@
         for (i = 0; i < fileInfo.colNames.length; i++) {
             // Name of assignment
             row = document.createElement("tr");
-            addTr(row, fileInfo.colNames[i]);
+            addTh(row, fileInfo.colNames[i]);
 
             // Input for brightspace name
             addTextInputCell(row);
@@ -178,46 +178,70 @@
         document.querySelector('#options').classList.add('on');
     }
 
+    function runAfterValence(gradeItems) {
+
+        var options = {
+            readAsDefault: "Text",
+            dragClass: "dropping",
+            on: {
+                loadend: onLoadFileEnd
+            }
+        };
+
+        //add file listeners
+        FileReaderJS.setupInput(document.querySelector('#file input'), options);
+        FileReaderJS.setupDrop(document.querySelector('#drop'), options);
+
+        //Go button click logic
+        document.querySelector('button').onclick = function () {
+            function makeTime() {
+                var time, date;
+                date = new Date();
+                time = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + '_' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                console.log("time:", time);
+                return time;
+            }
+
+            var converted,
+                arrExport,
+                time = makeTime();
+
+            try {
+                validateGo();
+                arrExport = getOptions();
+
+                //run the code
+                console.log("fileInfo.text:", fileInfo.text);
+                converted = csvMapleTAToD2L.convert(parseCol, arrExport);
+                download(converted, "converted_" + fileInfo.nameNoExtention + '_' + time + '.csv', fileInfo.mimeType);
+            } catch (e) {
+                displayErr(e.message);
+            }
+        };
+    }
+
+    function getAssignments() {
+        function filterAndConvert(saveList, gradeItem) {
+            if (gradeItem.GradeType === 'Numeric') {
+                saveList.push({
+                    name: gradeItem.Name,
+                    maxPoints: gradeItem.MaxPoints,
+                    shortName: gradeItem.ShortName
+                });
+            }
+            return saveList;
+        }
+
+        var call = require('./gradeItems.js'),
+            gradeItems = call.reduce(filterAndConvert, []);
+
+        console.log("call:", call);
+        console.log("gradeItems:", gradeItems);
+        runAfterValence(gradeItems);
+    }
+
     /***************************************************/
     /********************** START **********************/
     /***************************************************/
-    options = {
-        readAsDefault: "Text",
-        dragClass: "dropping",
-        on: {
-            loadend: onLoadFileEnd
-        }
-    };
-
-    //add file listeners
-    FileReaderJS.setupInput(document.querySelector('#file input'), options);
-    FileReaderJS.setupDrop(document.querySelector('#drop'), options);
-
-    //Go button click logic
-    document.querySelector('button').onclick = function () {
-        function makeTime() {
-            var time, date;
-            date = new Date();
-            time = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + '_' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-            console.log("time:", time);
-            return time;
-        }
-
-        var converted,
-            arrExport,
-            time = makeTime();
-
-        try {
-            validateGo();
-            arrExport = getOptions();
-
-            //run the code
-            console.log("fileInfo.text:", fileInfo.text);
-            converted = csvMapleTAToD2L.convert(parseCol, arrExport);
-            download(converted, "converted_" + fileInfo.nameNoExtention + '_' + time + '.csv', fileInfo.mimeType);
-        } catch (e) {
-            displayErr(e.message);
-        }
-    };
-
+    getAssignments();
 }());
