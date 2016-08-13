@@ -1,6 +1,6 @@
 {
     "name": "csv-mapleta-to-d2l",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "this converts mapleta csv's to csv's that d2l can import to the grade book",
     "main": "driver.js",
     "scripts": {
