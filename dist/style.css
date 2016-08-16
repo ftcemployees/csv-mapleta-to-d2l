@@ -39,8 +39,8 @@ label {
 #errorMessage {
     color: red;
     width: 80%;
-    height: 50px;
-    padding: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     text-align: center;
     position: fixed;
     opacity: 0;
@@ -127,7 +127,14 @@ table {
     border-collapse: collapse;
     margin: 20px;
 }
-td:nth-of-type(3) {
+td:nth-of-type(2) {
     text-align: center;
     vertical-align: middle;
+}
+td:nth-of-type(1) select {
+    font-size: 16px;
+}
+option[disabled="true"] {
+    background-color: gray;
+    color: white;
 }

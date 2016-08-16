@@ -4,8 +4,7 @@
 (function () {
     "use strict";
 
-    var fileInfo, parseCol,
-        csvMapleTAToD2L = require('./csvMapleTAToD2L.js'),
+    var csvMapleTAToD2L = require('./csvMapleTAToD2L.js'),
         download = require('./thirdParty/download.js'),
         filereaderFAKE = require('./thirdParty/filereader.js'),
         FileReaderJS = window.FileReaderJS;
@@ -16,6 +15,19 @@
     /***************************************************/
     /****************** ERROR CHECKING *****************/
     /***************************************************/
+    function ordinalNumber(numIn) {
+        var onesPlace = numIn % 10,
+            endings = ['th', 'st', 'nd', 'rd'],
+            ending;
+        if (onesPlace < 4) {
+            ending = endings[onesPlace];
+        } else {
+            ending = endings[0];
+        }
+
+        return numIn + ending;
+    }
+
     function displayErr(errors) {
         var errorPara = document.querySelector("#errorMessage"),
             errorMessage;
@@ -23,12 +35,12 @@
         errorPara.innerHTML = "";
 
         if (typeof errors === "string") {
-            errorMessage = document.createTextNode(errors);
+            errorMessage = errors.replace('\n', '<br/>');
         } else {
-            errorMessage = document.createTextNode(errors.join('\n'));
+            errorMessage = errors.join('<br/>');
         }
 
-        errorPara.appendChild(errorMessage);
+        errorPara.innerHTML = errorMessage;
         errorPara.style.opacity = 1;
         window.setTimeout(function () {
             errorPara.style.opacity = 0;
@@ -37,23 +49,35 @@
 
     /*Validate the inputs*/
     function validateGo() {
-        var inputs = document.getElementsByTagName('input'),
+        var checkBoxes = document.querySelectorAll('input[type=checkbox]'),
+            selects = document.querySelectorAll('select'),
             index,
+            errorMessages = [],
             atLeastOneChecked = false;
 
-        for (index = 0; index < inputs.length; ++index) {
-            if (inputs[index].type.toLowerCase() === "checkbox" && inputs[index].checked === true) {
+        for (index = 0; index < checkBoxes.length; ++index) {
+            //check if at least one is checked
+            if (checkBoxes[index].checked === true) {
                 atLeastOneChecked = true;
+                //make sure it has something selected 
+                if (selects[index].getAttribute('data-wasselectedindex') === '0') {
+                    errorMessages.push('The ' + ordinalNumber(index + 1) + ' row is checked to be included but a Brightspace Grade Item is not selected.');
+                }
             }
         }
 
         if (!atLeastOneChecked) {
-            throw new Error("At least one grade item must be included.");
+            errorMessages.push('At least one grade item must be included.');
         }
+
+        if (errorMessages.length !== 0) {
+            throw new Error(errorMessages.join('\n'));
+        }
+
     }
 
     /*Load all the options for the conversion Brightspace CSV gradesheet.*/
-    function getOptions() {
+    function getOptionsOld() {
         var arrExport = [],
             i,
             objExport,
@@ -79,36 +103,122 @@
         return arrExport;
     }
 
-    function makeTheTable(fileInfo) {
+    function getOptions(gradeItems) {
+        var i, objExport, row, queryString, selectedIndex,
+            arrExport = [],
+            table = document.getElementsByTagName("table")[0],
+            length = document.querySelectorAll("table tr").length;
+
+        for (i = 2; i <= length; i++) {
+            row = document.querySelector("table tr:nth-child(" + i + ")");
+            if (row.querySelectorAll(":checked").length > 0) {
+                //minus 1 becuause the 0 index is the option with a dash and gradeItems doen't have that
+                selectedIndex = parseInt(row.querySelector("select").getAttribute('data-wasselectedindex'), 10) - 1;
+                objExport = {
+                    nameOld: row.querySelector("th").innerHTML,
+                    nameNew: gradeItems[selectedIndex].name,
+                    pointsPossible: gradeItems[selectedIndex].maxPoints
+                };
+
+                arrExport.push(objExport);
+            }
+        }
+
+        console.log(arrExport);
+
+        return arrExport;
+    }
+
+    function makeTheTable(fileInfo, gradeItems) {
         var columnNameContainer = document.querySelector("#columnNameContainer"),
             table = document.createElement("table"),
             row,
             i;
 
-        function addTh(row, text) {
-            var cell = document.createElement("th"),
-                textEle = document.createTextNode(text);
-            cell.appendChild(textEle);
+        function addThingInCellToRow(thingToAdd, cellType, row) {
+            var cell = document.createElement(cellType);
+            cell.appendChild(thingToAdd);
             row.appendChild(cell);
+        }
+
+        function addTh(row, text) {
+            var thingToAdd = document.createTextNode(text);
+            addThingInCellToRow(thingToAdd, 'th', row);
+        }
+
+        function addTd(row, text) {
+            var thingToAdd = document.createTextNode(text);
+            addThingInCellToRow(thingToAdd, 'td', row);
         }
 
         function addTextInputCell(row) {
-            var cell = document.createElement("td"),
-                textInput = document.createElement('input');
+            var thingToAdd = document.createElement('input');
+            thingToAdd.type = "text";
 
-            textInput.type = "text";
-            cell.appendChild(textInput);
-            row.appendChild(cell);
+            addThingInCellToRow(thingToAdd, 'td', row);
         }
 
         function addCheckboxCell(row) {
-            var cell = document.createElement("td"),
-                checkbox = document.createElement('input');
+            var thingToAdd = document.createElement('input');
+            thingToAdd.type = "checkbox";
+            thingToAdd.checked = true;
 
-            checkbox.type = "checkbox";
-            checkbox.checked = true;
-            cell.appendChild(checkbox);
-            row.appendChild(cell);
+            addThingInCellToRow(thingToAdd, 'td', row);
+        }
+
+        function makeSelectsUnique(e) {
+            var i,
+                select = e.target,
+                selectIndex = parseInt(select.getAttribute('data-rowindex'), 10),
+                oldValue = parseInt(select.getAttribute('data-wasselectedindex'), 10),
+                value = parseInt(select.value, 10),
+                valueText = select[value].innerHTML,
+                selects = document.querySelectorAll('table select');
+
+            console.log("selectIndex:", selectIndex);
+            console.log("oldValue:", oldValue);
+            console.log("value:", value);
+            //fix the other selects
+            for (i = 0; i < selects.length; ++i) {
+                if (i !== selectIndex) {
+                    //enable old val
+                    selects[i][oldValue].removeAttribute('disabled');
+                    //disable new val
+                    if (value !== 0) {
+                        selects[i][value].setAttribute('disabled', 'true');
+                    }
+                }
+            }
+
+            //save the new oldval
+            select.setAttribute('data-wasselectedindex', value);
+
+            //update the column to the right
+            //document.querySelector('tr:nth-child(' + (selectIndex + 2) + ') td:nth-child(3)').innerHTML = valueText;
+        }
+
+        function addSelect(row, index) {
+            var thingToAdd = document.createElement('select'),
+                option = document.createElement('option');
+            //need a blank at top
+            option.appendChild(document.createTextNode('-'));
+            option.setAttribute('value', '0');
+            thingToAdd.appendChild(option);
+
+            gradeItems.forEach(function (item, i) {
+                option = document.createElement('option');
+                option.appendChild(document.createTextNode(item.name + ': ' + item.maxPoints + 'p'));
+                option.setAttribute('value', i + 1);
+                thingToAdd.appendChild(option);
+            });
+            //record the current settings
+            thingToAdd.setAttribute('data-rowindex', i);
+            thingToAdd.setAttribute('data-wasselectedindex', 0);
+            //add the change callback
+            thingToAdd.addEventListener('change', makeSelectsUnique);
+
+            //put it in the cell
+            addThingInCellToRow(thingToAdd, 'td', row);
         }
 
         /************************ MAKE THE TABLE *****************************/
@@ -119,8 +229,8 @@
 
         // Heading Cells
         addTh(row, "");
-        addTh(row, "Bright Space Name");
-        addTh(row, "Points Possible");
+        addTh(row, "Brightspace Grade Item");
+        //addTh(row, "Points Possible");
         addTh(row, "Include?");
 
         table.appendChild(row);
@@ -132,10 +242,11 @@
             addTh(row, fileInfo.colNames[i]);
 
             // Input for brightspace name
-            addTextInputCell(row);
+            addSelect(row, i);
 
-            // Input for points possible
-            addTextInputCell(row);
+            // points possible
+            //addTextInputCell(row);
+            //addTd(row, '-');
 
             // Input for including the grade item
             addCheckboxCell(row);
@@ -149,38 +260,41 @@
 
     }
 
-    function onLoadFileEnd(e, file) {
-
-        console.log(e.target.result);
-        console.log(file);
-
-        //parse the csv
-        try {
-            parseCol = csvMapleTAToD2L.parse(e.target.result);
-        } catch (er) {
-            displayErr(er.message);
-        }
-
-        fileInfo = {
-            text: e.target.result,
-            name: file.name,
-            nameNoExtention: file.extra.nameNoExtension,
-            mimeType: file.type,
-            colNames: csvMapleTAToD2L.getGradeColNames(parseCol)
-        };
-
-        makeTheTable(fileInfo);
-
-        //add in the file name so the user can see what file they picked
-        document.querySelector('#filename').innerHTML = "Filename: " + fileInfo.name;
-
-        //show the rest of the ui
-        document.querySelector('#options').classList.add('on');
-    }
-
     function runAfterValence(gradeItems) {
+        var fileInfo,
+            parseCol,
+            options;
 
-        var options = {
+        function onLoadFileEnd(e, file) {
+
+            console.log(e.target.result);
+            console.log(file);
+
+            //parse the csv
+            try {
+                parseCol = csvMapleTAToD2L.parse(e.target.result);
+            } catch (er) {
+                //debugger;
+                displayErr(er.message);
+            }
+
+            fileInfo = {
+                text: e.target.result,
+                name: file.name,
+                nameNoExtention: file.extra.nameNoExtension,
+                mimeType: file.type,
+                colNames: csvMapleTAToD2L.getGradeColNames(parseCol)
+            };
+
+            makeTheTable(fileInfo, gradeItems);
+
+            //add in the file name so the user can see what file they picked
+            document.querySelector('#filename').innerHTML = "Filename: " + fileInfo.name;
+
+            //show the rest of the ui
+            document.querySelector('#options').classList.add('on');
+        }
+        options = {
             readAsDefault: "Text",
             dragClass: "dropping",
             on: {
@@ -208,7 +322,7 @@
 
             try {
                 validateGo();
-                arrExport = getOptions();
+                arrExport = getOptions(gradeItems);
 
                 //run the code
                 console.log("fileInfo.text:", fileInfo.text);
@@ -216,6 +330,7 @@
                 download(converted, "converted_" + fileInfo.nameNoExtention + '_' + time + '.csv', fileInfo.mimeType);
             } catch (e) {
                 displayErr(e.message);
+                //debugger;
             }
         };
     }
@@ -223,17 +338,20 @@
     function getAssignments() {
         function filterAndConvert(saveList, gradeItem) {
             if (gradeItem.GradeType === 'Numeric') {
-                saveList.push({
+                saveList.push(Object.freeze({
                     name: gradeItem.Name,
                     maxPoints: gradeItem.MaxPoints,
                     shortName: gradeItem.ShortName
-                });
+                }));
             }
             return saveList;
         }
 
         var call = require('./gradeItems.js'),
             gradeItems = call.reduce(filterAndConvert, []);
+
+        //don't want to mess it up later
+        Object.freeze(gradeItems);
 
         console.log("call:", call);
         console.log("gradeItems:", gradeItems);
