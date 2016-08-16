@@ -35,11 +35,11 @@
         errorPara.innerHTML = "";
 
         if (typeof errors === "string") {
-            errorMessage = errors.replace('\n', '<br/>');
+            errorMessage = errors.replace(/\n/g, '<br/>');
         } else {
             errorMessage = errors.join('<br/>');
         }
-
+        console.log("Error:\n", errorMessage);
         errorPara.innerHTML = errorMessage;
         errorPara.style.opacity = 1;
         window.setTimeout(function () {
@@ -76,33 +76,6 @@
 
     }
 
-    /*Load all the options for the conversion Brightspace CSV gradesheet.*/
-    function getOptionsOld() {
-        var arrExport = [],
-            i,
-            objExport,
-            table = document.getElementsByTagName("table")[0],
-            queryString,
-            length = document.querySelectorAll("table tr").length;
-
-        for (i = 1; i < length; i++) {
-            queryString = "table tr:nth-of-type(" + (i + 1) + ") ";
-            if (document.querySelectorAll(queryString + ":checked").length > 0) {
-                objExport = {
-                    nameOld: document.querySelector(queryString + "th").innerHTML,
-                    nameNew: document.querySelector(queryString + "td:nth-of-type(1) input").value,
-                    pointsPossible: parseFloat(document.querySelector(queryString + "td:nth-of-type(2) input").value)
-                };
-
-                arrExport.push(objExport);
-            }
-        }
-
-        console.log(arrExport);
-
-        return arrExport;
-    }
-
     function getOptions(gradeItems) {
         var i, objExport, row, queryString, selectedIndex,
             arrExport = [],
@@ -111,7 +84,7 @@
 
         for (i = 2; i <= length; i++) {
             row = document.querySelector("table tr:nth-child(" + i + ")");
-            if (row.querySelectorAll(":checked").length > 0) {
+            if (row.querySelectorAll('[type="checkbox"]:checked').length > 0) {
                 //minus 1 becuause the 0 index is the option with a dash and gradeItems doen't have that
                 selectedIndex = parseInt(row.querySelector("select").getAttribute('data-wasselectedindex'), 10) - 1;
                 objExport = {
@@ -123,8 +96,6 @@
                 arrExport.push(objExport);
             }
         }
-
-        console.log(arrExport);
 
         return arrExport;
     }
@@ -161,9 +132,33 @@
         function addCheckboxCell(row) {
             var thingToAdd = document.createElement('input');
             thingToAdd.type = "checkbox";
-            thingToAdd.checked = true;
+            //thingToAdd.checked = true;
 
             addThingInCellToRow(thingToAdd, 'td', row);
+        }
+
+        function addSelectAllCheckboxHeading(row, text) {
+            var checkBox = document.createElement('input'),
+                cell = document.createElement('th'),
+                span = document.createElement('span'),
+                textEl = document.createTextNode(text);
+
+            checkBox.type = "checkbox";
+            checkBox.addEventListener('change', function (e) {
+                var rowBoxes = document.querySelectorAll('table td [type="checkbox"]'),
+                    i;
+
+                //check or uncheck the boxes as nessicary
+                for (i = 0; i < rowBoxes.length; ++i) {
+                    rowBoxes[i].checked = this.checked;
+                }
+            });
+
+            span.appendChild(document.createTextNode('check all '));
+            span.appendChild(checkBox);
+            cell.appendChild(textEl);
+            cell.appendChild(span);
+            row.appendChild(cell);
         }
 
         function makeSelectsUnique(e) {
@@ -175,9 +170,9 @@
                 valueText = select[value].innerHTML,
                 selects = document.querySelectorAll('table select');
 
-            console.log("selectIndex:", selectIndex);
-            console.log("oldValue:", oldValue);
-            console.log("value:", value);
+            //console.log("selectIndex:", selectIndex);
+            //console.log("oldValue:", oldValue);
+            //console.log("value:", value);
             //fix the other selects
             for (i = 0; i < selects.length; ++i) {
                 if (i !== selectIndex) {
@@ -231,7 +226,8 @@
         addTh(row, "");
         addTh(row, "Brightspace Grade Item");
         //addTh(row, "Points Possible");
-        addTh(row, "Include?");
+        //addTh(row, "Include in CSV out");
+        addSelectAllCheckboxHeading(row, "Include in CSV?");
 
         table.appendChild(row);
 
@@ -267,8 +263,8 @@
 
         function onLoadFileEnd(e, file) {
 
-            console.log(e.target.result);
-            console.log(file);
+            console.log("MapleTA CSV File In Text:\n", e.target.result);
+            //console.log("MapleTA file info:", file);
 
             //parse the csv
             try {
@@ -312,7 +308,6 @@
                 var time, date;
                 date = new Date();
                 time = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + '_' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-                console.log("time:", time);
                 return time;
             }
 
@@ -323,10 +318,13 @@
             try {
                 validateGo();
                 arrExport = getOptions(gradeItems);
+                console.log('Options From Ui:\n', arrExport);
 
                 //run the code
-                console.log("fileInfo.text:", fileInfo.text);
+                console.log("File Convertion Stats:\n", fileInfo);
                 converted = csvMapleTAToD2L.convert(parseCol, arrExport);
+
+                console.log("CSV File Out Converted:\n", converted);
                 download(converted, "converted_" + fileInfo.nameNoExtention + '_' + time + '.csv', fileInfo.mimeType);
             } catch (e) {
                 displayErr(e.message);
@@ -336,6 +334,11 @@
     }
 
     function getAssignments() {
+        var jquery = require('jquery'),
+            classId,
+            gradeItems,
+            useValence = true;
+
         function filterAndConvert(saveList, gradeItem) {
             if (gradeItem.GradeType === 'Numeric') {
                 saveList.push(Object.freeze({
@@ -347,15 +350,43 @@
             return saveList;
         }
 
-        var call = require('./gradeItems.js'),
-            gradeItems = call.reduce(filterAndConvert, []);
+        function callback(error, data) {
+            if (error) {
+                console.log("Valence error:\n", error);
+                console.log("Error Data?:\n", data);
+                return;
+            }
 
-        //don't want to mess it up later
-        Object.freeze(gradeItems);
+            gradeItems = data.reduce(filterAndConvert, []);
 
-        console.log("call:", call);
-        console.log("gradeItems:", gradeItems);
-        runAfterValence(gradeItems);
+            //don't want to mess it up later
+            Object.freeze(gradeItems);
+
+            //console.log("gradeItemsData:", data);
+            console.log("Grade Items From D2L:\n", gradeItems);
+            runAfterValence(gradeItems);
+        }
+
+        if (useValence) {
+            classId = window.location.search.match(/ou=(\d+)/)[1];
+            //make the call
+            jquery.ajax('/d2l/api/le/1.14/' + classId + '/grades/', {
+                method: 'GET',
+                headers: {
+                    'X-Csrf-Token': localStorage['XSRF.Token']
+                },
+                success: function (data) {
+                    callback(null, data);
+                },
+                error: function (jqXHR, errString, e) {
+                    callback(errString, e);
+                }
+            });
+        } else {
+            //callback(null, require('./gradeItems.js'));
+            console.log('Not Using Valence.');
+        }
+
     }
 
     /***************************************************/

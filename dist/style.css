@@ -18,7 +18,7 @@ main {
 }
 
 body {
-    background: #e1d3c1;
+    background: #FAFAFA;
     padding-top: 20px;
     font-family: sans-serif;
     margin: 20px;
@@ -45,7 +45,7 @@ label {
     position: fixed;
     opacity: 0;
     transition: opacity 0.25s;
-    top: 0;
+    bottom: 0;
     left: 10%;
     background-color: white;
     border: 3px solid black;
@@ -81,15 +81,15 @@ label {
     background-color: #68cb68;
 }
 
-#go button {
+button {
+    font-size: 20px;
     padding: 3px;
-    width: 40px;
+    min-width: 160px;
     border-radius: 3px;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
-#options,
-#go {
+#options {
     opacity: 0;
 }
 
@@ -126,6 +126,10 @@ td {
 table {
     border-collapse: collapse;
     margin: 20px;
+}
+th span {
+    display: block;
+    font-weight: normal;
 }
 td:nth-of-type(2) {
     text-align: center;
