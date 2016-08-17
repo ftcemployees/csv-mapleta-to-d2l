@@ -49,7 +49,7 @@
 
     /*Validate the inputs*/
     function validateGo() {
-        var checkBoxes = document.querySelectorAll('input[type=checkbox]'),
+        var checkBoxes = document.querySelectorAll('td input[type="checkbox"]'),
             selects = document.querySelectorAll('select'),
             index,
             errorMessages = [],
@@ -337,7 +337,7 @@
         var jquery = require('jquery'),
             classId,
             gradeItems,
-            useValence = true;
+            useValence = false;
 
         function filterAndConvert(saveList, gradeItem) {
             if (gradeItem.GradeType === 'Numeric') {
@@ -383,7 +383,7 @@
                 }
             });
         } else {
-            //callback(null, require('./gradeItems.js'));
+            callback(null, require('./gradeItems.js'));
             console.log('Not Using Valence.');
         }
 
