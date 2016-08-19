@@ -129,9 +129,9 @@ var csvMapleTAToD2L = (function () {
         var csv = parseCsv(csvText);
 
         // TODO(GRANT): Create a function to filter the rows that don't equal "" if the first Object is named
-        csv = csv.filter(function(item){
+        /*csv = csv.filter(function(item){
             return item.col1 === '' || typeof item.col1 === 'undefined';
-        });
+        });*/
         //check if we have all the columns we need
         //this will throw an error if we don't have all the columns we need.
         //the message will be a '\n' delimited string that has the approate feed back to the user in it.
