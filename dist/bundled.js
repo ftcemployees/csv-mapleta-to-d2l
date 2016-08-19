@@ -210,7 +210,647 @@ var csvMapleTAToD2L = (function () {
     return objOut;
 }());
 
-},{"d3-dsv":4}],2:[function(require,module,exports){
+},{"d3-dsv":5}],2:[function(require,module,exports){
+/*jslint node: true */
+
+module.exports = [{
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 12858,
+    "Name": "SCORM Test",
+    "ShortName": "Homework 02",
+    "GradeType": "Numeric",
+    "CategoryId": 6355,
+    "Description": {
+        "Text": "",
+        "Html": "<p>this is the Test SCORM</p>"
+    },
+    "Weight": 102,
+    "AssociatedTool": {
+        "ToolId": 78000,
+        "ToolItemId": 62
+    }
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 15916,
+    "Name": "Test grade item",
+    "ShortName": "Homework 01",
+    "GradeType": "Numeric",
+    "CategoryId": 6355,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 51000,
+        "ToolItemId": 15286
+    }
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 17834,
+    "Name": "group 1 board",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 3000,
+        "ToolItemId": 18149
+    }
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 17835,
+    "Name": "group 2 board",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 3000,
+        "ToolItemId": 18150
+    }
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 17836,
+    "Name": "group 3 board",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 3000,
+        "ToolItemId": 18151
+    }
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 36222,
+    "Name": "test json 2",
+    "ShortName": "Homework 04",
+    "GradeType": "Numeric",
+    "CategoryId": 6355,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 78000,
+        "ToolItemId": 349
+    }
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": 0,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 36689,
+    "Name": "json3",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 78000,
+        "ToolItemId": 351
+    }
+}, {
+    "MaxPoints": 100,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": true,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 36789,
+    "Name": "testStorylineTitleLesson",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 0,
+    "AssociatedTool": {
+        "ToolId": 78000,
+        "ToolItemId": 353
+    }
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 38030,
+    "Name": "Lesson 01 Review",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 78000,
+        "ToolItemId": 355
+    }
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 38031,
+    "Name": "Lesson 02 Review",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 78000,
+        "ToolItemId": 357
+    }
+}, {
+    "MaxPoints": 100,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": true,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 38572,
+    "Name": "Small Storyline lesson",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 0,
+    "AssociatedTool": {
+        "ToolId": 78000,
+        "ToolItemId": 359
+    }
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 38635,
+    "Name": "Test Rubric",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": null
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 59151,
+    "Name": "hasGrade",
+    "ShortName": "Test 02",
+    "GradeType": "Numeric",
+    "CategoryId": 187259,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 51000,
+        "ToolItemId": 51269
+    }
+}, {
+    "MaxPoints": 11,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 149804,
+    "Name": "Small Storyline test",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 78000,
+        "ToolItemId": 877
+    }
+}, {
+    "MaxPoints": 100,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": true,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 149808,
+    "Name": "testStorylineTitleLesson",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 0,
+    "AssociatedTool": null
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 149809,
+    "Name": "Small Storyline test Debug",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 78000,
+        "ToolItemId": 879
+    }
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 150309,
+    "Name": "SaveAScore",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 78000,
+        "ToolItemId": 881
+    }
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 150314,
+    "Name": "SaveAScoreNoSequ",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 78000,
+        "ToolItemId": 883
+    }
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 157150,
+    "Name": "Suspend Data Template Grade",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 78000,
+        "ToolItemId": 885
+    }
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 167165,
+    "Name": "BOMSCORMSessionDay",
+    "ShortName": "Test 01",
+    "GradeType": "Numeric",
+    "CategoryId": 187259,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 78000,
+        "ToolItemId": 887
+    }
+}, {
+    "MaxPoints": 20,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 183189,
+    "Name": "Testing category Max Points",
+    "ShortName": "Homework 03",
+    "GradeType": "Numeric",
+    "CategoryId": 6355,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": null
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 184281,
+    "Name": "Word Count",
+    "ShortName": "Test 03",
+    "GradeType": "Numeric",
+    "CategoryId": 187259,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 51000,
+        "ToolItemId": 7223
+    }
+}, {
+    "Id": 187268,
+    "Name": "subCat",
+    "ShortName": "",
+    "GradeType": "Formula",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": null
+}, {
+    "Id": 187271,
+    "Name": "other subcat",
+    "ShortName": "",
+    "GradeType": "Calculated",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": null
+}, {
+    "MaxPoints": 66,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": 6419,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/6419",
+    "Id": 218026,
+    "Name": "somethingCool",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 78000,
+        "ToolItemId": 891
+    }
+}, {
+    "MaxPoints": 100,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": true,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 243226,
+    "Name": "Book of Mormon Reading Assignment",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 0,
+    "AssociatedTool": {
+        "ToolId": 78000,
+        "ToolItemId": 1054
+    }
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 250590,
+    "Name": "text regex grade item",
+    "ShortName": "Homework 05",
+    "GradeType": "Numeric",
+    "CategoryId": 6355,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 51000,
+        "ToolItemId": 6826
+    }
+}, {
+    "MaxPoints": 10,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": 6419,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/6419",
+    "Id": 267009,
+    "Name": "drop down",
+    "ShortName": "",
+    "GradeType": "SelectBox",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": null
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 335874,
+    "Name": "I am awesome",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 51000,
+        "ToolItemId": 7606
+    }
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 535445,
+    "Name": "auto grade setting",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": null
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 537879,
+    "Name": "Test auto export",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": {
+        "ToolId": 51000,
+        "ToolItemId": 261432
+    }
+}, {
+    "MaxPoints": 10,
+    "CanExceedMaxPoints": false,
+    "IsBonus": false,
+    "ExcludeFromFinalGradeCalculation": false,
+    "GradeSchemeId": null,
+    "GradeSchemeUrl": "/d2l/api/le/1.14/10011/grades/schemes/0",
+    "Id": 573064,
+    "Name": "CSVIn",
+    "ShortName": "",
+    "GradeType": "Numeric",
+    "CategoryId": 0,
+    "Description": {
+        "Text": "",
+        "Html": ""
+    },
+    "Weight": 10,
+    "AssociatedTool": null
+}];
+
+},{}],3:[function(require,module,exports){
 /*jslint plusplus: true, browser:true, node: true, devel: true */
 /*global FileReaderJS, csvMapleTAToD2L, download*/
 
@@ -550,7 +1190,7 @@ var csvMapleTAToD2L = (function () {
         var jquery = require('jquery'),
             classId,
             gradeItems,
-            useValence = true;
+            useValence = false;
 
         function filterAndConvert(saveList, gradeItem) {
             if (gradeItem.GradeType === 'Numeric') {
@@ -596,7 +1236,7 @@ var csvMapleTAToD2L = (function () {
                 }
             });
         } else {
-//            callback(null, require('./gradeItems.js'));
+            callback(null, require('./gradeItems.js'));
             console.log('Not Using Valence.');
         }
 
@@ -608,9 +1248,9 @@ var csvMapleTAToD2L = (function () {
     getAssignments();
 }());
 
-},{"./csvMapleTAToD2L.js":1,"./thirdParty/download.js":6,"./thirdParty/filereader.js":7,"jquery":5}],3:[function(require,module,exports){
+},{"./csvMapleTAToD2L.js":1,"./gradeItems.js":2,"./thirdParty/download.js":7,"./thirdParty/filereader.js":8,"jquery":6}],4:[function(require,module,exports){
 document.querySelector("main").innerHTML = decodeURI("%0D%0A%20%20%20%20%20%20%20%20%3Cp%20id=%22errorMessage%22%3E%3C/p%3E%0D%0A%20%20%20%20%20%20%20%20%3Cdiv%20id=%22file%22%3E%0D%0A%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Ch1%3EMapleTA%20Gradesheet%20Converter%3C/h1%3E%0D%0A%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Ch2%3EInstructions%3C/h2%3E%0D%0A%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cp%3EUpload%20to%20this%20application%20the%20CSV%20file%20from%20MapleTA.%20Once%20uploaded,%20follow%20the%20instructions%20below.%3C/p%3E%0D%0A%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Ch2%3E1.%20Click%20&apos;Choose%20File&apos;%20to%20read%20file%3C/h2%3E%0D%0A%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Clabel%3E%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20Maple%20TA%20File:%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cinput%20type=%22file%22%3E%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C/label%3E%0D%0A%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Ch2%3EOr%3C/h2%3E%0D%0A%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20id=%22drop%22%3EDrop%20CSV%20here%3C/div%3E%0D%0A%20%20%20%20%20%20%20%20%3C/div%3E%0D%0A%0D%0A%20%20%20%20%20%20%20%20%3Cdiv%20id=%22options%22%3E%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20id=%22filename%22%3E%3C/div%3E%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Ch2%3E2.%20Answer%20these%20Questions%3C/h2%3E%0D%0A%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20id=%22columnNameContainer%22%3E%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C!--%20%20%20%20%20%20%20%20%20%20%20%20Column%20names%20with%20appear%20here.%20%20%20%20%20%20%20%20%20%20%20%20--%3E%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0D%0A%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Ch2%3E3.%20Click%20Go%20to%20convert%20the%20CSV%20sheet.%3C/h2%3E%0D%0A%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cbutton%3EGo%3C/button%3E%0D%0A%20%20%20%20%20%20%20%20%3C/div%3E%0D%0A%0D%0A%20%20%20%20");
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 // https://d3js.org/d3-dsv/ Version 1.0.0. Copyright 2016 Mike Bostock.
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -780,7 +1420,7 @@ document.querySelector("main").innerHTML = decodeURI("%0D%0A%20%20%20%20%20%20%2
   Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /*eslint-disable no-unused-vars*/
 /*!
  * jQuery JavaScript Library v3.1.0
@@ -10856,7 +11496,7 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 //download.js v4.2, by dandavis; 2008-2016. [MIT] see http://danml.com/download.html for tests/usage
 // v1 landed a FF+Chrome compat way of downloading strings to local un-named files, upgraded to use a hidden frame and optional mime
 // v2 added named files via a[download], msSaveBlob, IE (10+) support, and window.URL support for larger+faster saves than dataURLs
@@ -11025,7 +11665,7 @@ return jQuery;
 	}; /* end download() */
 }));
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /*I made one tiny change to this file, the last line had 
     })(this, document);
 I changed it to 
@@ -11488,4 +12128,4 @@ See http://github.com/bgrins/filereader.js for documentation.
 
 })(window, document);
 
-},{}]},{},[3,2]);
+},{}]},{},[4,3]);
