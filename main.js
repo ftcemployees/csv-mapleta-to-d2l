@@ -215,7 +215,7 @@
             //put it in the cell
             addThingInCellToRow(thingToAdd, 'td', row);
         }
-
+        
         /************************ MAKE THE TABLE *****************************/
         //clean out the container
         columnNameContainer.innerHTML = '';
@@ -235,7 +235,11 @@
         for (i = 0; i < fileInfo.colNames.length; i++) {
             // Name of assignment
             row = document.createElement("tr");
-            addTh(row, fileInfo.colNames[i]);
+            if (i + 1 == fileInfo.colNames.length) {
+                addTh(row, fileInfo.colNames[i])
+            } else {
+                addTh(row, fileInfo.colNames[i]);
+            }
 
             // Input for brightspace name
             addSelect(row, i);

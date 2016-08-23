@@ -24,17 +24,17 @@ var csvMapleTAToD2L = (function () {
         var onesPlace = numIn % 10,
             ending;
         switch (onesPlace) {
-        case 1:
-            ending = 'st';
-            break;
-        case 2:
-            ending = 'nd';
-            break;
-        case 3:
-            ending = 'rd';
-            break;
-        default:
-            ending = 'th';
+            case 1:
+                ending = 'st';
+                break;
+            case 2:
+                ending = 'nd';
+                break;
+            case 3:
+                ending = 'rd';
+                break;
+            default:
+                ending = 'th';
         }
 
         return numIn + ending;
@@ -115,13 +115,14 @@ var csvMapleTAToD2L = (function () {
     function getGradeColNames(csvObj) {
         var cols = csvObj.columns,
             startIndex = cols.indexOf('Student ID') + 1,
-            endIndex = cols.indexOf('Total'),
+            endIndex = cols.indexOf('Total') + 1,
             colsOut = cols.slice(startIndex, endIndex);
 
         //console.log("cols:", cols);
         //console.log("startIndex:", startIndex);
         //console.log("endIndex:", endIndex);
         //console.log("colsOut:", colsOut);
+        
         return colsOut;
     }
 
@@ -173,8 +174,8 @@ var csvMapleTAToD2L = (function () {
                 if (row[col.nameOld].indexOf('%') > -1) {
                     rowOut[col.nameNew + ' Points Grade'] = (parseInt(row[col.nameOld], 10) / 100 * col.pointsPossible).toFixed(2);
                 } else if (row[col.nameOld].length == 0) {
-		    // TODO(Grant): What should happen here? Nothing?
-		} else {
+                    rowOut[col.nameNew + ' Points Grade'] = "";
+                } else {
                     throw new Error("CSV file contains number scores and not percentages");
                 }
             });
@@ -211,7 +212,6 @@ var csvMapleTAToD2L = (function () {
     //for Broswer
     return objOut;
 }());
-
 },{"d3-dsv":5}],2:[function(require,module,exports){
 /*jslint node: true */
 
@@ -1070,7 +1070,7 @@ module.exports = [{
             //put it in the cell
             addThingInCellToRow(thingToAdd, 'td', row);
         }
-
+        
         /************************ MAKE THE TABLE *****************************/
         //clean out the container
         columnNameContainer.innerHTML = '';
@@ -1090,7 +1090,11 @@ module.exports = [{
         for (i = 0; i < fileInfo.colNames.length; i++) {
             // Name of assignment
             row = document.createElement("tr");
-            addTh(row, fileInfo.colNames[i]);
+            if (i + 1 == fileInfo.colNames.length) {
+                addTh(row, fileInfo.colNames[i])
+            } else {
+                addTh(row, fileInfo.colNames[i]);
+            }
 
             // Input for brightspace name
             addSelect(row, i);
