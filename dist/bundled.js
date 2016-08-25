@@ -81,7 +81,7 @@ var csvMapleTAToD2L = (function () {
     function csvHasCorrectColumns(d3ParsedCSV) {
         var errors = [],
             cols = d3ParsedCSV.columns,
-            totalIndex = cols.indexOf('Total'),
+            totalIndex = cols.indexOf('MapleTA Calculated Total'),
             idIndex = cols.indexOf('Student ID'),
             loginIndex = cols.indexOf('Login');
 
@@ -115,7 +115,7 @@ var csvMapleTAToD2L = (function () {
     function getGradeColNames(csvObj) {
         var cols = csvObj.columns,
             startIndex = cols.indexOf('Student ID') + 1,
-            endIndex = cols.indexOf('Total') + 1,
+            endIndex = cols.indexOf('MapleTA Calculated Total') + 1,
             colsOut = cols.slice(startIndex, endIndex);
 
         //console.log("cols:", cols);
@@ -171,6 +171,10 @@ var csvMapleTAToD2L = (function () {
 
             //add in the grade cols
             colConversions.forEach(function (col) {
+		if (col.nameOld == "MapleTA Calculated Total") {
+		    row[col.nameOld] += "%";
+		}
+		
                 if (row[col.nameOld].indexOf('%') > -1) {
                     rowOut[col.nameNew + ' Points Grade'] = (parseInt(row[col.nameOld], 10) / 100 * col.pointsPossible).toFixed(2);
                 } else if (row[col.nameOld].length == 0) {
@@ -212,6 +216,7 @@ var csvMapleTAToD2L = (function () {
     //for Broswer
     return objOut;
 }());
+
 },{"d3-dsv":5}],2:[function(require,module,exports){
 /*jslint node: true */
 
@@ -1091,7 +1096,7 @@ module.exports = [{
             // Name of assignment
             row = document.createElement("tr");
             if (i + 1 == fileInfo.colNames.length) {
-                addTh(row, fileInfo.colNames[i])
+                addTh(row, fileInfo.colNames[i]);
             } else {
                 addTh(row, fileInfo.colNames[i]);
             }
@@ -1118,23 +1123,26 @@ module.exports = [{
     function runAfterValence(gradeItems) {
         var fileInfo,
             parseCol,
-            options;
+            options,
+	    newText;
 
         function onLoadFileEnd(e, file) {
+	    // Replace "Total" with "MapleTA Calculated Total"
+	    newText = e.target.result.replace("Total", "MapleTA Calculated Total");
 
-            console.log("MapleTA CSV File In Text:\n", e.target.result);
+            console.log("MapleTA CSV File In Text:\n", newText);
             //console.log("MapleTA file info:", file);
 
             //parse the csv
             try {
-                parseCol = csvMapleTAToD2L.parse(e.target.result);
+                parseCol = csvMapleTAToD2L.parse(newText);
             } catch (er) {
                 //debugger;
                 displayErr(er.message);
             }
 
             fileInfo = {
-                text: e.target.result,
+                text: newText,
                 name: file.name,
                 nameNoExtention: file.extra.nameNoExtension,
                 mimeType: file.type,

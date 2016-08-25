@@ -80,7 +80,7 @@ var csvMapleTAToD2L = (function () {
     function csvHasCorrectColumns(d3ParsedCSV) {
         var errors = [],
             cols = d3ParsedCSV.columns,
-            totalIndex = cols.indexOf('Total'),
+            totalIndex = cols.indexOf('MapleTA Calculated Total'),
             idIndex = cols.indexOf('Student ID'),
             loginIndex = cols.indexOf('Login');
 
@@ -114,7 +114,7 @@ var csvMapleTAToD2L = (function () {
     function getGradeColNames(csvObj) {
         var cols = csvObj.columns,
             startIndex = cols.indexOf('Student ID') + 1,
-            endIndex = cols.indexOf('Total') + 1,
+            endIndex = cols.indexOf('MapleTA Calculated Total') + 1,
             colsOut = cols.slice(startIndex, endIndex);
 
         //console.log("cols:", cols);
@@ -170,6 +170,10 @@ var csvMapleTAToD2L = (function () {
 
             //add in the grade cols
             colConversions.forEach(function (col) {
+		if (col.nameOld == "MapleTA Calculated Total") {
+		    row[col.nameOld] += "%";
+		}
+		
                 if (row[col.nameOld].indexOf('%') > -1) {
                     rowOut[col.nameNew + ' Points Grade'] = (parseInt(row[col.nameOld], 10) / 100 * col.pointsPossible).toFixed(2);
                 } else if (row[col.nameOld].length == 0) {

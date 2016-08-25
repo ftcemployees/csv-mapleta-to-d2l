@@ -236,7 +236,7 @@
             // Name of assignment
             row = document.createElement("tr");
             if (i + 1 == fileInfo.colNames.length) {
-                addTh(row, fileInfo.colNames[i])
+                addTh(row, fileInfo.colNames[i]);
             } else {
                 addTh(row, fileInfo.colNames[i]);
             }
@@ -263,23 +263,26 @@
     function runAfterValence(gradeItems) {
         var fileInfo,
             parseCol,
-            options;
+            options,
+	    newText;
 
         function onLoadFileEnd(e, file) {
+	    // Replace "Total" with "MapleTA Calculated Total"
+	    newText = e.target.result.replace("Total", "MapleTA Calculated Total");
 
-            console.log("MapleTA CSV File In Text:\n", e.target.result);
+            console.log("MapleTA CSV File In Text:\n", newText);
             //console.log("MapleTA file info:", file);
 
             //parse the csv
             try {
-                parseCol = csvMapleTAToD2L.parse(e.target.result);
+                parseCol = csvMapleTAToD2L.parse(newText);
             } catch (er) {
                 //debugger;
                 displayErr(er.message);
             }
 
             fileInfo = {
-                text: e.target.result,
+                text: newText,
                 name: file.name,
                 nameNoExtention: file.extra.nameNoExtension,
                 mimeType: file.type,
