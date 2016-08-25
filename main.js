@@ -344,7 +344,7 @@
         var jquery = require('jquery'),
             classId,
             gradeItems,
-            useValence = false;
+            useValence = true;
 
         function filterAndConvert(saveList, gradeItem) {
             if (gradeItem.GradeType === 'Numeric') {
@@ -390,7 +390,7 @@
                 }
             });
         } else {
-            callback(null, require('./gradeItems.js'));
+            //callback(null, require('./gradeItems.js'));
             console.log('Not Using Valence.');
         }
 
