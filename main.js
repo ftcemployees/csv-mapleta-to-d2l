@@ -1,9 +1,10 @@
+
 /*jslint plusplus: true, browser:true, node: true, devel: true */
 /*global FileReaderJS, csvMapleTAToD2L, download*/
 
 (function () {
     "use strict";
-
+    
     var csvMapleTAToD2L = require('./csvMapleTAToD2L.js'),
         download = require('./thirdParty/download.js'),
         filereaderFAKE = require('./thirdParty/filereader.js'),
@@ -357,21 +358,26 @@
             return saveList;
         }
 
+	function checkGradeItemNames(gradeItems) {
+
+	}
+	
         function callback(error, data) {
             if (error) {
                 console.log("Valence error:\n", error);
                 console.log("Error Data?:\n", data);
                 return;
             }
-
+	    
             gradeItems = data.reduce(filterAndConvert, []);
 
+	    checkGradeItemNames(gradeItems);
             //don't want to mess it up later
             Object.freeze(gradeItems);
 
             //console.log("gradeItemsData:", data);
             console.log("Grade Items From D2L:\n", gradeItems);
-            runAfterValence(gradeItems);
+	    runAfterValence(gradeItems);
         }
 
         if (useValence) {
