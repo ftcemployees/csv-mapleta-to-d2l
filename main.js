@@ -1,10 +1,9 @@
-
 /*jslint plusplus: true, browser:true, node: true, devel: true */
 /*global FileReaderJS, csvMapleTAToD2L, download*/
 
 (function () {
     "use strict";
-    
+
     var csvMapleTAToD2L = require('./csvMapleTAToD2L.js'),
         download = require('./thirdParty/download.js'),
         filereaderFAKE = require('./thirdParty/filereader.js'),
@@ -216,7 +215,7 @@
             //put it in the cell
             addThingInCellToRow(thingToAdd, 'td', row);
         }
-        
+
         /************************ MAKE THE TABLE *****************************/
         //clean out the container
         columnNameContainer.innerHTML = '';
@@ -265,11 +264,11 @@
         var fileInfo,
             parseCol,
             options,
-	    newText;
+            newText;
 
         function onLoadFileEnd(e, file) {
-	    // Replace "Total" with "MapleTA Calculated Total"
-	    newText = e.target.result.replace("Total", "MapleTA Calculated Total");
+            // Replace "Total" with "MapleTA Calculated Total"
+            newText = e.target.result.replace("Total", "MapleTA Calculated Total");
 
             console.log("MapleTA CSV File In Text:\n", newText);
             //console.log("MapleTA file info:", file);
@@ -345,7 +344,8 @@
         var jquery = require('jquery'),
             classId,
             gradeItems,
-            useValence = true;
+            nonUnqiueName,
+            useValence = false;
 
         function filterAndConvert(saveList, gradeItem) {
             if (gradeItem.GradeType === 'Numeric') {
@@ -358,26 +358,45 @@
             return saveList;
         }
 
-	function checkGradeItemNames(gradeItems) {
+        function existsUniqueNames(gradeItems) {
+            var index1,
+                index2;
+            
+            for (index1 = 0; index1 < gradeItems.length; ++index1) {
+                for (index2 = index1 + 1; index2 < gradeItems.length; ++index2) {
+                    if (gradeItems[index1].name === gradeItems[index2].name) {
+                        nonUnqiueName = gradeItems[index1].name;
+                        console.log("nonUniqueName: " + nonUnqiueName);
+                        console.log(index1);
+                        console.log(index2);
+                        console.log(gradeItems);
+                        return false;
+                    }
+                }
+            }
+        
+            return true;
+        }
 
-	}
-	
         function callback(error, data) {
             if (error) {
                 console.log("Valence error:\n", error);
                 console.log("Error Data?:\n", data);
                 return;
             }
-	    
+
             gradeItems = data.reduce(filterAndConvert, []);
 
-	    checkGradeItemNames(gradeItems);
+            if (!existsUniqueNames(gradeItems)) {
+                throw new Error("Exists a grade item with a non-unqiue name. Please change one of the assignments names that are named '" + nonUnqiueName + "'"); 
+            }
+            
             //don't want to mess it up later
             Object.freeze(gradeItems);
 
             //console.log("gradeItemsData:", data);
             console.log("Grade Items From D2L:\n", gradeItems);
-	    runAfterValence(gradeItems);
+            runAfterValence(gradeItems);
         }
 
         if (useValence) {
@@ -396,8 +415,12 @@
                 }
             });
         } else {
-            //callback(null, require('./gradeItems.js'));
-            console.log('Not Using Valence.');
+            try {
+                console.log('Not Using Valence.');
+                callback(null, require('./gradeItems.js'));
+            } catch (e) {
+                displayErr(e.message);
+            }
         }
 
     }
