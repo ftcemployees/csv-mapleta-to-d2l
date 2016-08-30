@@ -1,4 +1,20 @@
-download
+******************************************************************************
+                                    LICENSE
+******************************************************************************
+
+Copyright (c) 2016 <copyright holders>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+******************************************************************************
+                               THIRD PARTY LICENSES
+******************************************************************************
+
+download (https://www.npmjs.com/package/download & https://github.com/kevva/download)
 
 MIT License
 
@@ -12,7 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ******************************************************************************
 
-FileReader
+FileReader (https://github.com/bgrins/filereader.js/)
 
 I made one tiny change to this file, the last line had 
     })(this, document);
@@ -45,7 +61,7 @@ SOFTWARE.
 
 ******************************************************************************
 
-d3
+d3 (https://d3js.org/)
 
 Copyright 2013-2016 Mike Bostock
 All rights reserved.
@@ -77,7 +93,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ******************************************************************************
 
-rw
+rw (https://www.npmjs.com/package/rw & https://github.com/mbostock/rw)
 
 Copyright (c) 2014-2016, Michael Bostock
 All rights reserved.
@@ -108,7 +124,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ******************************************************************************
 
-jquery
+jquery (https://jquery.org/)
 
 Copyright jQuery Foundation and other contributors, https://jquery.org/
 
@@ -149,7 +165,7 @@ the terms above.
 
 ******************************************************************************
 
-sizzle
+sizzle (https://sizzlejs.com/)
 
 Copyright jQuery Foundation and other contributors, https://jquery.org/
 

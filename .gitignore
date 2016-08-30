@@ -1,6 +1,7 @@
 forTesting/noGit/*
 node_modules
 
+# EMACS temporary files
 *~
 [#]*[#]
 .\#*
