@@ -1,2 +1,6 @@
 forTesting/noGit/*
 node_modules
+
+*~
+[#]*[#]
+.\#*
