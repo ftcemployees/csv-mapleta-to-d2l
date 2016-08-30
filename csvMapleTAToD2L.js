@@ -126,13 +126,28 @@ var csvMapleTAToD2L = (function () {
     }
 
     function parse(csvText) {
-        // TODO(GRANT): If  "" exists in first line first everything, put a title
+        var sumDataExists = false,
+            sumDataTitle = "Summary Data Exists",
+            columns;
+        
+        if (csvText[0] === '"' && csvText[1] === '"') {
+            csvText = csvText.replace('""', sumDataTitle);
+            sumDataExists = true;
+        }
+        
         var csv = parseCsv(csvText);
 
-        // TODO(GRANT): Create a function to filter the rows that don't equal "" if the first Object is named
-        /*csv = csv.filter(function(item){
-            return item.col1 === '' || typeof item.col1 === 'undefined';
-        });*/
+        // WARNING: This filter potentially will remove other properties from d3-dsv object.
+        if (sumDataExists) {
+            columns = csv.columns;
+            csv = csv.filter(function(item) {
+                return item[sumDataTitle] === '' || item[sumDataTitle] === '""' || item[sumDataTitle] === 'undefined'
+            });
+            csv.columns = columns;
+        }
+        // If the above return statement ever breaks, this return statement should work!
+        //      return item[sumDataTitle] !== "Mean" && item[sumDataTitle] !== "Median" && item[sumDataTitle] !== "Total Points";
+
         //check if we have all the columns we need
         //this will throw an error if we don't have all the columns we need.
         //the message will be a '\n' delimited string that has the approate feed back to the user in it.

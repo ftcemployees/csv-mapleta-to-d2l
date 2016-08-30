@@ -235,7 +235,7 @@
         for (i = 0; i < fileInfo.colNames.length; i++) {
             // Name of assignment
             row = document.createElement("tr");
-            if (i + 1 == fileInfo.colNames.length) {
+            if (i + 1 === fileInfo.colNames.length) {
                 addTh(row, fileInfo.colNames[i]);
             } else {
                 addTh(row, fileInfo.colNames[i]);
@@ -344,8 +344,7 @@
         var jquery = require('jquery'),
             classId,
             gradeItems,
-            nonUnqiueName,
-            useValence = false;
+            useValence = true;
 
         function filterAndConvert(saveList, gradeItem) {
             if (gradeItem.GradeType === 'Numeric') {
@@ -360,25 +359,24 @@
 
         function existsUniqueNames(gradeItems) {
             var index1,
-                index2;
+                index2,
+                errMessage = [],
+                nonUniqueName;
             
             for (index1 = 0; index1 < gradeItems.length; ++index1) {
                 for (index2 = index1 + 1; index2 < gradeItems.length; ++index2) {
                     if (gradeItems[index1].name === gradeItems[index2].name) {
-                        nonUnqiueName = gradeItems[index1].name;
-                        console.log("nonUniqueName: " + nonUnqiueName);
-                        console.log(index1);
-                        console.log(index2);
-                        console.log(gradeItems);
-                        return false;
+                        nonUniqueName = gradeItems[index1].name;
+                        errMessage.push("'" + nonUniqueName + "' is a non-unqiue Brightspace grade item. Please ensure that all grade items have unique names.");
                     }
                 }
             }
         
-            return true;
+            return errMessage;
         }
 
         function callback(error, data) {
+            var errMessage;
             if (error) {
                 console.log("Valence error:\n", error);
                 console.log("Error Data?:\n", data);
@@ -387,8 +385,10 @@
 
             gradeItems = data.reduce(filterAndConvert, []);
 
-            if (!existsUniqueNames(gradeItems)) {
-                throw new Error("Exists a grade item with a non-unqiue name. Please change one of the assignments names that are named '" + nonUnqiueName + "'"); 
+            errMessage = existsUniqueNames(gradeItems);
+            
+            if (errMessage.length !== 0) {
+                throw new Error(errMessage);
             }
             
             //don't want to mess it up later
@@ -408,16 +408,24 @@
                     'X-Csrf-Token': localStorage['XSRF.Token']
                 },
                 success: function (data) {
-                    callback(null, data);
+                    try {
+                        callback(null, data);
+                    } catch (e) {
+                        displayErr(e.message);
+                    }
                 },
                 error: function (jqXHR, errString, e) {
-                    callback(errString, e);
+                    try {
+                        callback(errString, e);
+                    } catch (er) {
+                        displayErr(er.message);
+                    }
                 }
             });
         } else {
             try {
                 console.log('Not Using Valence.');
-                callback(null, require('./gradeItems.js'));
+                //callback(null, require('./gradeItems.js'));
             } catch (e) {
                 displayErr(e.message);
             }
