@@ -42,9 +42,11 @@
         console.log("Error:\n", errorMessage);
         errorPara.innerHTML = errorMessage;
         errorPara.style.opacity = 1;
+        errorPara.style.height = "auto";
         window.setTimeout(function () {
             errorPara.style.opacity = 0;
-        }, 5000);
+            errorPara.style.height = 0;
+        }, 10000);
     }
 
     /*Validate the inputs*/
