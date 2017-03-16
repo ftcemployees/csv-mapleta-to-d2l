@@ -1,8 +1,8 @@
-#CSV MapleTA to D2L
+# CSV MapleTA to D2L
 
 This is just a little page that converts a MapleTA csv to a D2L csv
 
-##How to Install
+## How to Install
 
 1. Download `index.html` from this repo or from https://content.byui.edu/items/e2c1b9e2-a609-4910-9299-20187d95fd7a/1/
 1. Get `index.html` in to a D2L course. Choose one
@@ -10,11 +10,11 @@ This is just a little page that converts a MapleTA csv to a D2L csv
    1. Copy the contents of index.html and then paste the code into a new html content page in D2L
 1. Place restrictions on the content page so only the professor and higher can see it.
 
-##How to use it
+## How to use it
 
 wait for it
 
-##TODO
+## TODO
 
 1. ~~have `main.js` use the new `parse, getGradeColNames and convert` in from `csvMapleTAToD2l.js`~~
 1. ~~Make the interface ask for the input~~
@@ -24,6 +24,6 @@ wait for it
 1. explain how to use it using the demo csv files.
 1. explain what you need to do in MapleTA and D2L to use it
 
-##Application Link
+## Application Link
 
 <a href="https://content.byui.edu/integ/gen/c9cf10db-ba9e-4cd4-a0bf-8bce9f89dd16/0/csv-mapleta-to-d2l.zip/csv-mapleta-to-d2l/index.html">Try it out!</a>
